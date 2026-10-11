@@ -2,7 +2,7 @@ import {Body,Controller,Get,Post,Patch,Delete,Param,Req,UseGuards,Injectable,Not
 import {IsIn,IsObject,IsString,IsOptional,MaxLength} from 'class-validator';
 import {Prisma} from '@prisma/client';
 import {randomUUID} from 'crypto';
-import {Database} from './module';
+import {Database} from './database';
 import {AuthGuard,AuthedRequest} from './auth';
 class CreateDto {
  @IsString() @MaxLength(160) title!:string;

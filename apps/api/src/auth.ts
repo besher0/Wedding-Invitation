@@ -2,7 +2,7 @@ import {Body,CanActivate,Controller,ExecutionContext,Injectable,Post,Get,Req,Use
 import {IsEmail,IsString,MinLength,MaxLength} from 'class-validator';
 import {JwtService} from '@nestjs/jwt';
 import {hash,compare} from 'bcryptjs';
-import {Database} from './module';
+import {Database} from './database';
 import {Request} from 'express';
 export type AuthedRequest = Request & {userId:string};
 export class Credentials {
