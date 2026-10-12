@@ -81,3 +81,12 @@
 .cin-parent-name{font:normal clamp(20px,3.5vw,28px)/1.5 Amiri,serif;overflow-wrap:anywhere}
 .cin-family-column strong{font:700 clamp(31px,5vw,47px)/1.4 Amiri,serif;overflow-wrap:anywhere;margin-top:14px}
 @media(max-width:500px){.cin-family-pair{gap:10px}.cin-family-title{font-size:19px}.cin-parent-name{font-size:21px}.cin-family-column strong{font-size:32px}}
+
+/* Venue is clearly visible even when GPS is missing. */
+.cin-arches{display:flex;align-items:center;justify-content:center;gap:7px;opacity:.75;color:var(--cin-ink)}
+.cin-arches span{font-size:26px}
+.cin-place-illustration{background:radial-gradient(ellipse at center,var(--cin-edge),transparent 76%);border-radius:120px 120px 12px 12px}
+.cin-venue-address{display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;max-width:100%;overflow-wrap:anywhere}
+.cin-location-label{font:600 13px Cairo,sans-serif;letter-spacing:1px;opacity:.8}
+.cin-venue-section .cin-map{max-width:100%;white-space:normal;line-height:1.8;text-align:center}
+.cin-envelope:focus-visible{outline:3px solid var(--cin-ink);outline-offset:5px}

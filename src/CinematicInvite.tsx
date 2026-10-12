@@ -1,6 +1,6 @@
 import {useEffect,useMemo,useRef,useState} from 'react';
 import {motion,AnimatePresence} from 'framer-motion';
-import {CalendarDays,MapPin,Heart,ExternalLink,ChevronDown,CalendarPlus,RotateCcw} from 'lucide-react';
+import {CalendarDays,MapPin,Heart,ExternalLink,ChevronDown,CalendarPlus} from 'lucide-react';
 import type {Invitation} from './data';
 import './cinematic.css';
 
@@ -47,7 +47,7 @@ export default function CinematicInvite({invite,compact=false}:{invite:Invitatio
  const autoRef=useRef(false);
  const lastFrame=useRef<number|null>(null);
  const cal=useMemo(()=>calendarDays(invite.date),[invite.date]);
- const mapsDestination=directionsUrl(invite);
+ const mapsDestination=directionsUrl(invite) || (invite.address?.trim() ? 'https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent([invite.venue,invite.address].filter(Boolean).join('، ')) : null);
  useEffect(()=>{
   if(!opened||compact){setAutoPlaying(false);return;}
   const el=viewport.current;if(!el)return;
@@ -73,7 +73,6 @@ export default function CinematicInvite({invite,compact=false}:{invite:Invitatio
   return ()=>{cancelAnimationFrame(frame);lastFrame.current=null};
  },[autoPlaying,opened,compact]);
  const manualStop=()=>{if(autoRef.current){autoRef.current=false;setAutoPlaying(false)}};
- const restart=()=>{setAutoPlaying(false);setOpened(false);viewport.current?.scrollTo({top:0})};
  return <div ref={viewport} onWheel={manualStop} onTouchStart={manualStop} onKeyDown={e=>{if(['ArrowDown','ArrowUp','PageDown','PageUp',' '].includes(e.key))manualStop()}} className={'cinematic '+(compact?'cinematic--compact ':'')+'cinematic--'+invite.theme} dir="rtl">
   <AnimatePresence mode="wait">
    {!opened?<motion.div key="sealed" className="cin-sealed" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0,scale:1.1,filter:'blur(8px)'}} transition={{duration:.7}}>
@@ -85,7 +84,6 @@ export default function CinematicInvite({invite,compact=false}:{invite:Invitatio
      <button className="cin-envelope" onClick={()=>setOpened(true)} aria-label="افتح ظرف الدعوة">
        <span className="cin-envelope-flap"/><span className="cin-ribbon-v"/><span className="cin-ribbon-h"/><span className="cin-bow">🎀</span><span className="cin-seal">♡</span>
      </button>
-     <button className="cin-open" onClick={()=>setOpened(true)}>اضغط لفتح الدعوة <Heart size={15}/></button>
      <span className="cin-floral cin-floral--bottom" aria-hidden="true">❦</span>
    </motion.div>:
    <motion.div key="content" initial={{opacity:0,y:40}} animate={{opacity:1,y:0}} transition={{duration:.9}} className="cin-content">
@@ -115,15 +113,14 @@ export default function CinematicInvite({invite,compact=false}:{invite:Invitatio
     <section className="cin-section cin-venue-section">
      <div className="cin-divider">❁ ✦ ❁</div>
      <span className="cin-label">The celebration</span>
-     <h2>مكان الحفل</h2>
-     <div className="cin-place-illustration" aria-hidden="true"><span>✧</span><div className="cin-arches">♜</div><span>✧</span></div>
-     <h3>{invite.venue||'قاعة الحفل'}</h3><p>{invite.address||'نتشرف بحضوركم'}</p>
+     <h2>مكان الحفل</h2><span className="cin-location-label">عنوان الصالة</span>
+     <div className="cin-place-illustration" aria-hidden="true"><span>❀</span><div className="cin-arches"><Heart size={65} strokeWidth={1.2}/><span>✧</span><Heart size={65} strokeWidth={1.2}/></div><span>❀</span></div>
+     <h3>{invite.venue||'قاعة الحفل'}</h3><p className="cin-venue-address"><MapPin size={18}/>{invite.address||'العنوان غير محدد بعد'}</p>
      {mapsDestination&&<a className="cin-map" href={mapsDestination} target="_blank" rel="noopener noreferrer"><MapPin size={17}/> افتح موقع الصالة واتبع الاتجاهات <ExternalLink size={14}/></a>}
     </section>
     <section className="cin-section cin-ending">
      <div className="cin-divider">✧ ❀ ✧</div><h2>حضوركم يكمل فرحتنا</h2><p>ننتظركم بكل الحب والسعادة</p>
      <Heart size={25} strokeWidth={1.1}/>
-     <button className="cin-reset" onClick={restart}><RotateCcw size={14}/> العودة إلى الظرف</button>
     </section>
    </motion.div>}
   </AnimatePresence>
