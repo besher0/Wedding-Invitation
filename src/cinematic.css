@@ -224,3 +224,32 @@
 }
 @media(max-width:550px){.cin-pull-names{font-size:30px}.cin-full-envelope .cin-pull-card{left:12%;width:76%;height:52%}}
 @media(prefers-reduced-motion:reduce){.cin-envelope-scene--opening .cin-pull-card{animation-duration:.01ms}}
+
+/* Gate-fold alternative: GPU-friendly transform-only opening, warm joyful stationery. */
+.cinematic{--cin-paper:#fff9f3;--cin-ink:#a65770;--cin-shade:#eaa2ab;--cin-edge:#eed5d3}
+.cinematic--gold{--cin-paper:#fff8e9;--cin-ink:#9f6c42;--cin-shade:#e6ba80;--cin-edge:#ead6ba}
+.cinematic--night{--cin-paper:#302a43;--cin-ink:#f2c6d2;--cin-shade:#c995b8;--cin-edge:#795971}
+.cin-gate-scene{position:relative;height:100%;min-height:100%;width:100%;overflow:hidden;isolation:isolate;background:radial-gradient(circle at 50% 38%,#fffaef,#f7e3e4 85%);perspective:1100px}
+.cin-gate-invitation{position:absolute;inset:4%;background:linear-gradient(150deg,#fffdf7,#ffeff2);border:2px solid #eac8cf;box-shadow:0 16px 35px #a36b7926;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:20px;color:#aa5876;padding:20px;text-align:center}
+.cin-gate-flourish{font:30px Amiri,serif;color:#d38a9b}
+.cin-gate-title{font:22px Amiri,serif}
+.cin-gate-names{font:normal clamp(36px,7vw,56px)/1.5 Amiri,serif}
+.cin-gate-names i{font-size:.55em;font-style:normal}
+.cin-gate-subtitle{font:15px Cairo,sans-serif}
+.cin-gate-trigger{position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent;cursor:pointer;padding:0;transform-style:preserve-3d}
+.cin-gate-door{position:absolute;top:0;height:100%;width:50.15%;background:linear-gradient(115deg,#fffdf7 5%,#f7e6e0 65%,#f3d9dd);border:1px solid #e7c7c6;backface-visibility:hidden;display:flex;flex-direction:column;justify-content:space-around;align-items:center;color:#d991a2;box-shadow:inset 0 0 35px #e8a8b328;will-change:transform}
+.cin-gate-door--right{right:0;transform-origin:right center}
+.cin-gate-door--left{left:0;transform-origin:left center;background:linear-gradient(255deg,#fffdf7 5%,#f7e6e0 65%,#f3d9dd)}
+.cin-gate-flowers{font-size:clamp(70px,20vw,130px);opacity:.24;line-height:1}
+.cin-gate-ornament{font-size:45px;opacity:.38}
+.cin-gate-medallion{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:80px;height:80px;border-radius:50%;border:5px double #fff0dc;background:radial-gradient(circle at 30% 28%,#fbe7c9,#d8a69f 60%,#b97888);box-shadow:0 5px 18px #855e6a55;display:grid;place-items:center;color:#894b65;will-change:transform,opacity}
+.cin-gate-opening .cin-gate-door--right{animation:cin-gate-right 1.12s cubic-bezier(.32,.08,.2,1) both}
+.cin-gate-opening .cin-gate-door--left{animation:cin-gate-left 1.12s cubic-bezier(.32,.08,.2,1) both}
+.cin-gate-opening .cin-gate-medallion{animation:cin-gate-seal .48s ease-out both}
+@keyframes cin-gate-right{to{transform:rotateY(104deg)}}
+@keyframes cin-gate-left{to{transform:rotateY(-104deg)}}
+@keyframes cin-gate-seal{to{transform:translate(-50%,-50%) scale(.65);opacity:0}}
+.cin-gate-trigger:focus-visible{outline:3px solid #b75f81;outline-offset:-8px}
+.cin-content .cin-section{background:var(--cin-paper)}
+.cin-content .cin-hero .cin-divider,.cin-ending .cin-divider{animation:none}
+@media(prefers-reduced-motion:reduce){.cin-gate-opening .cin-gate-door--right,.cin-gate-opening .cin-gate-door--left,.cin-gate-opening .cin-gate-medallion{animation-duration:.01ms}}
