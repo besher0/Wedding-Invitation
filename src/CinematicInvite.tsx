@@ -22,6 +22,24 @@ function saveCalendar(invite:Invitation){
  const body=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Laylatna//Wedding Invitation//AR','BEGIN:VEVENT','DTSTART:'+utc(start),'DTEND:'+utc(end),'SUMMARY:'+[invite.groom,invite.bride].filter(Boolean).join(' و ')+' - حفل الزفاف','LOCATION:'+(invite.venue||'')+' '+(invite.address||''),'DESCRIPTION:'+(invite.intro||''),'END:VEVENT','END:VCALENDAR'].join('\r\n');
  const blob=new Blob([body],{type:'text/calendar;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='wedding-invitation.ics';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
+function directionsUrl(invite:Invitation):string|null {
+ const raw=(invite.gpsLocation||invite.mapUrl||'').trim();
+ if(!raw)return null;
+ // Accept latitude, longitude (optionally after an @), or a Google Maps URL.
+ const coords=raw.match(/^(-?\d{1,2}(?:\.\d+)?)\s*[,،]\s*(-?\d{1,3}(?:\.\d+)?)$/);
+ if(coords){
+  const lat=Number(coords[1]),lng=Number(coords[2]);
+  if(lat>=-90&&lat<=90&&lng>=-180&&lng<=180)return 'https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(lat+','+lng);
+  return null;
+ }
+ try {
+  const url=new URL(raw);
+  if(url.protocol!=='https:')return null;
+  const host=url.hostname.toLowerCase();
+  if(host==='maps.app.goo.gl'||host==='goo.gl'||host==='maps.google.com'||host==='www.google.com'||host==='google.com'||host.endsWith('.google.com'))return url.toString();
+ }catch{return null}
+ return null;
+}
 export default function CinematicInvite({invite,compact=false}:{invite:Invitation,compact?:boolean}){
  const [opened,setOpened]=useState(false);
  const [autoPlaying,setAutoPlaying]=useState(false);
@@ -29,6 +47,7 @@ export default function CinematicInvite({invite,compact=false}:{invite:Invitatio
  const autoRef=useRef(false);
  const lastFrame=useRef<number|null>(null);
  const cal=useMemo(()=>calendarDays(invite.date),[invite.date]);
+ const mapsDestination=directionsUrl(invite);
  useEffect(()=>{
   if(!opened||compact){setAutoPlaying(false);return;}
   const el=viewport.current;if(!el)return;
@@ -75,8 +94,8 @@ export default function CinematicInvite({invite,compact=false}:{invite:Invitatio
      <span className="cin-kicker">بسم الله الرحمن الرحيم</span>
      <p className="cin-verse">﴿ وَجَعَلَ بَيْنَكُم مَوَدَّةً وَرَحْمَةً ﴾</p>
      <div className="cin-family-pair" aria-label="أسماء العائلتين">
-       <div className="cin-family-line"><span className="cin-family-title">حرم السيد {invite.groomFamily||'فلان'}</span><strong>{invite.groom||'العريس'}</strong></div>
-       <div className="cin-family-line"><span className="cin-family-title">حرم السيد {invite.brideFamily||'فلان'}</span><strong>{invite.bride||'العروس'}</strong></div>
+       <div className="cin-family-column"><span className="cin-family-title">حرم السيد</span><span className="cin-parent-name">{invite.groomFamily||'فلان'}</span><strong>{invite.groom||'العريس'}</strong></div>
+       <div className="cin-family-column"><span className="cin-family-title">حرم السيد</span><span className="cin-parent-name">{invite.brideFamily||'فلان'}</span><strong>{invite.bride||'العروس'}</strong></div>
      </div>
      <p className="cin-invited">{invite.invitedBy||'تتشرف عائلتا العروسين بدعوتكم لحضور حفل الزفاف'}</p>
      <div className="cin-divider">✧ ❀ ✧</div>
@@ -99,7 +118,7 @@ export default function CinematicInvite({invite,compact=false}:{invite:Invitatio
      <h2>مكان الحفل</h2>
      <div className="cin-place-illustration" aria-hidden="true"><span>✧</span><div className="cin-arches">♜</div><span>✧</span></div>
      <h3>{invite.venue||'قاعة الحفل'}</h3><p>{invite.address||'نتشرف بحضوركم'}</p>
-     {invite.mapUrl?.startsWith('https://')&&<a className="cin-map" href={invite.mapUrl} target="_blank" rel="noopener noreferrer"><MapPin size={17}/> افتح الموقع على الخريطة <ExternalLink size={14}/></a>}
+     {mapsDestination&&<a className="cin-map" href={mapsDestination} target="_blank" rel="noopener noreferrer"><MapPin size={17}/> افتح موقع الصالة واتبع الاتجاهات <ExternalLink size={14}/></a>}
     </section>
     <section className="cin-section cin-ending">
      <div className="cin-divider">✧ ❀ ✧</div><h2>حضوركم يكمل فرحتنا</h2><p>ننتظركم بكل الحب والسعادة</p>
