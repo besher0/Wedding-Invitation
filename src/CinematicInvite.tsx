@@ -45,7 +45,7 @@ export default function CinematicInvite({invite,compact=false}:{invite:Invitatio
  const [opening,setOpening]=useState(false);
  const openingTimer=useRef<ReturnType<typeof setTimeout>|null>(null);
  useEffect(()=>()=>{if(openingTimer.current)clearTimeout(openingTimer.current)},[]);
- const openEnvelope=()=>{if(opening||opened)return;setOpening(true);openingTimer.current=setTimeout(()=>{setOpened(true);setOpening(false)},1800)};
+ const openEnvelope=()=>{if(opening||opened)return;setOpening(true);openingTimer.current=setTimeout(()=>{setOpened(true);setOpening(false)},2700)};
  const [autoPlaying,setAutoPlaying]=useState(false);
  const viewport=useRef<HTMLDivElement>(null);
  const autoRef=useRef(false);
@@ -83,6 +83,7 @@ export default function CinematicInvite({invite,compact=false}:{invite:Invitatio
      <div className="cin-emboss cin-emboss--tl" aria-hidden="true">❀<span>❧</span></div>
      <div className="cin-emboss cin-emboss--br" aria-hidden="true">❀<span>❧</span></div>
      <button className="cin-envelope cin-full-envelope" type="button" onClick={openEnvelope} disabled={opening} aria-label="اضغط على الختم لفتح ظرف الدعوة">
+       <span className="cin-pull-card" aria-hidden="true"><span className="cin-pull-flourish">✧ ❀ ✧</span><span className="cin-pull-heading">دعوة زفاف</span><span className="cin-pull-names">{invite.groom||'العريس'} <em>و</em> {invite.bride||'العروس'}</span><span className="cin-pull-caption">لحظات الفرح أجمل بحضوركم</span></span>
        <span className="cin-envelope-fold cin-envelope-fold--left"/><span className="cin-envelope-fold cin-envelope-fold--right"/>
        <span className="cin-satin-ribbon cin-satin-ribbon--vertical"/><span className="cin-satin-ribbon cin-satin-ribbon--horizontal"/>
        <span className="cin-satin-tail cin-satin-tail--left"/><span className="cin-satin-tail cin-satin-tail--right"/>

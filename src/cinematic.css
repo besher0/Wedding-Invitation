@@ -203,3 +203,24 @@
 .cin-envelope-scene--opening .cin-seal{transform:translate(-50%,-145%) scale(.45);opacity:0}
 .cin-full-envelope:focus-visible{outline:3px solid #b88390;outline-offset:-6px}
 @media(prefers-reduced-motion:reduce){.cin-full-envelope .cin-seal,.cin-full-envelope .cin-satin-bow{transition-duration:.01ms}}
+
+/* Pull-out invitation: seal release -> envelope folds recede -> card rises -> fills viewport. */
+.cin-full-envelope .cin-pull-card{position:absolute;z-index:1;top:24%;left:13%;width:74%;height:55%;padding:22px 10px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:11px;background:linear-gradient(145deg,#fffefa,#f5e8e3);border:1px solid #dbc8c0;box-shadow:0 5px 22px #7f65532b;color:#9f7176;opacity:0;transform:translateY(20%) scale(.93);transition:none;overflow:hidden}
+.cin-pull-flourish{font-size:27px;letter-spacing:6px;opacity:.65}
+.cin-pull-heading{font:17px Amiri,serif}
+.cin-pull-names{font:normal clamp(28px,6vw,46px)/1.5 Amiri,serif}
+.cin-pull-names em{font-size:.6em;font-style:normal}
+.cin-pull-caption{font:12px Cairo,sans-serif}
+.cin-envelope-scene--opening .cin-pull-card{animation:cin-pull-card 1.75s .82s cubic-bezier(.22,.74,.24,1) both}
+.cin-envelope-scene--opening .cin-envelope-fold{animation:cin-fold-left .8s .65s both}
+.cin-envelope-scene--opening .cin-envelope-fold--right{animation:cin-fold-right .8s .65s both}
+.cin-envelope-scene--opening .cin-satin-bow{transform:translate(-50%,-180%) scale(.65);opacity:0}
+@keyframes cin-pull-card{
+  0%{opacity:0;transform:translateY(25%) scale(.93);z-index:1}
+  18%{opacity:1;transform:translateY(10%) scale(.96);z-index:1}
+  42%{opacity:1;transform:translateY(-18%) scale(1);z-index:4}
+  75%{opacity:1;transform:translateY(-34%) scale(1.15);z-index:4}
+  100%{opacity:1;transform:translateY(-35%) scale(1.65);z-index:4}
+}
+@media(max-width:550px){.cin-pull-names{font-size:30px}.cin-full-envelope .cin-pull-card{left:12%;width:76%;height:52%}}
+@media(prefers-reduced-motion:reduce){.cin-envelope-scene--opening .cin-pull-card{animation-duration:.01ms}}
