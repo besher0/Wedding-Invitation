@@ -92,7 +92,7 @@
 .cin-gate-touch:focus-visible{outline:3px solid #b17794;outline-offset:5px}
 .cin-gate-wax{display:grid;place-items:center;width:77px;height:77px;border:4px double #fff8ef;border-radius:50%;background:radial-gradient(circle at 28% 20%,#fff2ee,#f0c8cf 39%,#d68ca3 75%,#a75879);color:#874562;box-shadow:0 5px 16px #82546b75,inset 0 4px 7px #fff9f1a2,inset 0 -5px 6px #8a486373;will-change:transform,opacity}
 .cin-gate-wax-inner{width:50px;height:50px;display:grid;place-items:center;border:1px solid #af7890;border-radius:50%;transform:rotate(-10deg);box-shadow:inset 0 1px 4px #fff9f5}
-.cin-gate-instruction{font:500 12px Cairo,sans-serif;color:#90536e;opacity:.85}
+.cin-gate-instruction{font:500 12px Cairo,sans-serif;color:#90536e;opacity:.85;min-height:22px;transition:opacity .3s ease}.cin-gate-instruction--hidden{opacity:0}
 .cin-audio-toolbar{position:sticky;top:12px;height:0;z-index:5;text-align:left;pointer-events:none}
 .cin-audio-toolbar button{pointer-events:auto;display:inline-grid;place-items:center;width:42px;height:42px;margin:12px 0 0 12px;border:1px solid var(--cin-edge);border-radius:50%;color:var(--cin-ink);background:var(--cin-light);box-shadow:0 4px 16px #9b557022}
 .cinematic--compact .cin-section{padding:44px 12px}

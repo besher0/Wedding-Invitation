@@ -200,7 +200,7 @@ export default function CinematicInvite({invite,compact=false}:{invite:Invitatio
      <span ref={sealRef} className="cin-gate-wax"><span className="cin-gate-wax-inner"><Heart size={26} strokeWidth={1.3}/></span></span>
     </button>
    </div>
-   {phase==='sealed'&&<span className="cin-gate-instruction">المس الختم لفتح الدعوة</span>}
+   <span className={'cin-gate-instruction'+(phase==='sealed'?'':' cin-gate-instruction--hidden')}>المس الختم لفتح الدعوة</span>
   </div>}
  </div>;
 }
