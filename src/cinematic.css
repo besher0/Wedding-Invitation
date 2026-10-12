@@ -60,3 +60,16 @@
 @keyframes cin-envelope-hover{50%{transform:translateY(-7px)}}
 @keyframes cin-shimmer{50%{opacity:.5;letter-spacing:9px}}
 @media(prefers-reduced-motion:reduce){.cin-sealed .cin-envelope,.cin-hero .cin-divider,.cin-ending .cin-divider{animation:none}}
+
+/* No visual scrollbar or player toolbar; auto-scroll remains active, touch/wheel still work. */
+.cinematic{scrollbar-width:none;-ms-overflow-style:none}
+.cinematic::-webkit-scrollbar{display:none;width:0;height:0}
+.cin-scroll-controls{display:none!important}
+.cin-verse{font:normal clamp(17px,2.5vw,22px)/2 Amiri,serif;margin:0;color:var(--cin-ink);letter-spacing:.3px}
+.cin-family-pair{width:min(100%,430px);display:grid;gap:12px;padding:16px 0;border-top:1px solid var(--cin-edge);border-bottom:1px solid var(--cin-edge)}
+.cin-family-line{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:10px;text-align:center;direction:rtl}
+.cin-family-title{font:normal clamp(15px,2vw,20px)/1.6 Amiri,serif}
+.cin-family-line strong{font:normal clamp(23px,3.5vw,33px)/1.5 Amiri,serif}
+.cin-couple-names{font:normal clamp(30px,5vw,46px)/1.5 Amiri,serif}
+.cin-couple-names span{font-size:.6em;padding:0 5px}
+@media(max-width:500px){.cin-family-line{gap:5px}.cin-family-title{font-size:16px}.cin-family-line strong{font-size:25px}.cin-hero{padding-top:85px;padding-bottom:85px}}
