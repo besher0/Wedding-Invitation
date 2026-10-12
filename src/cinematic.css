@@ -73,3 +73,11 @@
 .cin-couple-names{font:normal clamp(30px,5vw,46px)/1.5 Amiri,serif}
 .cin-couple-names span{font-size:.6em;padding:0 5px}
 @media(max-width:500px){.cin-family-line{gap:5px}.cin-family-title{font-size:16px}.cin-family-line strong{font-size:25px}.cin-hero{padding-top:85px;padding-bottom:85px}}
+
+/* Family details match the reference: two side-by-side vertical name columns. */
+.cin-family-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;width:min(100%,430px);padding:18px 0;border-top:1px solid var(--cin-edge);border-bottom:1px solid var(--cin-edge);align-items:start}
+.cin-family-column{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:2px;min-width:0}
+.cin-family-title{font:normal clamp(18px,3vw,24px)/1.5 Amiri,serif}
+.cin-parent-name{font:normal clamp(20px,3.5vw,28px)/1.5 Amiri,serif;overflow-wrap:anywhere}
+.cin-family-column strong{font:700 clamp(31px,5vw,47px)/1.4 Amiri,serif;overflow-wrap:anywhere;margin-top:14px}
+@media(max-width:500px){.cin-family-pair{gap:10px}.cin-family-title{font-size:19px}.cin-parent-name{font-size:21px}.cin-family-column strong{font-size:32px}}
