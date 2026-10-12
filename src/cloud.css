@@ -1,1 +1,31 @@
 .cloud-page{min-height:100vh;background:#faf6f2;color:#5a4242;font-family:Cairo,Tahoma,sans-serif;padding:20px}.cloud-head{max-width:1100px;margin:auto;display:flex;justify-content:space-between;align-items:center}.cloud-head h1{font-size:25px}.cloud-head nav{display:flex;align-items:center;gap:12px}.cloud-head a{font-size:12px}.cloud-main{max-width:1100px;margin:35px auto}.cloud-form{max-width:440px;margin:50px auto;padding:35px;background:white;border-radius:16px;display:grid;gap:18px;box-shadow:0 10px 40px #553b3b12}.cloud-form label,.cloud-fields label{display:grid;gap:7px;font-size:13px}.cloud-form input,.cloud-fields input{border:1px solid #dacbc5;border-radius:8px;padding:11px;width:100%;min-width:0}.cloud-templates{display:flex;flex-wrap:wrap;gap:10px;margin:25px 0}.cloud-list{display:grid;gap:12px}.cloud-item{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:white;border-radius:12px;padding:12px}.cloud-item span{font-size:12px;color:#8d7771}.cloud-editor{background:white;padding:25px;margin-top:28px;border-radius:15px}.cloud-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.cloud-preview,.cloud-invite{padding:35px;margin:25px auto;text-align:center;border-radius:8px;max-width:520px}.cloud-preview h2,.cloud-invite h1{font:40px Amiri}.public-page{display:grid;place-items:center}.cloud-invite{min-height:78vh;width:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}.cloud-message{position:fixed;bottom:10px;left:10px;background:#fff;padding:15px;border-radius:10px;box-shadow:0 2px 20px #0002}.cloud-invite p{max-width:390px;line-height:2}.cloud-invite a{text-decoration:underline}@media(max-width:650px){.cloud-fields{grid-template-columns:1fr}.cloud-head{flex-direction:column}.cloud-editor{padding:15px}.cloud-invite{min-height:90vh}}
+/* Shared cinematic invitation experience for real, published invitations. */
+.public-experience{min-height:100dvh;background:radial-gradient(circle at 50% 20%,#f7e8e3,#e7d7d2 65%,#e3d0ca);display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;padding:16px}
+.public-stage{height:min(860px,calc(100dvh - 75px));min-height:540px;width:min(100%,530px);border:1px solid #ffffffb3;box-shadow:0 30px 100px #482c3260,0 0 0 10px #ffffff20;overflow:hidden;border-radius:10px;background:white}
+.public-stage>.invitation{height:100%;scrollbar-width:thin}
+.public-stage .invitation-cover{min-height:100%;padding:40px 28px}
+.public-stage .envelope{width:205px;height:135px;animation:float-envelope 4s ease-in-out infinite;box-shadow:0 18px 45px #5f35431a}
+.public-stage .envelope:before{content:'✦';position:absolute;top:-37px;font-size:24px;animation:twinkle 3s ease-in-out infinite}
+.public-stage .invitation h2{font-size:clamp(36px,7vw,54px)}
+.public-stage .invitation-inside{padding:65px 38px;min-height:100%;justify-content:center}
+.public-stage .open-invite{box-shadow:0 8px 23px #865e6860}
+.public-signature{margin-top:16px;color:#755b62;font-family:Amiri,serif;font-size:16px;text-align:center}
+.public-loading{padding:50px;color:#795963}
+.cloud-page{background:linear-gradient(135deg,#fffaf7 0%,#f7eee9 50%,#f8f0ec 100%);padding:24px clamp(15px,4vw,55px)}
+.cloud-head{border-bottom:1px solid #d9c2b899;padding-bottom:22px}
+.cloud-head h1{font-family:Amiri,serif;color:#966b6f;font-size:37px}
+.cloud-main>h2{font-family:Amiri,serif;font-size:42px;margin-bottom:0;color:#674d4d}
+.cloud-main>p{color:#927e79}
+.cloud-item{border:1px solid #ecded8;box-shadow:0 10px 26px #58413a0a;padding:18px;border-radius:16px;gap:13px}
+.cloud-item strong{font-family:Amiri,serif;font-size:23px;margin-left:auto}
+.cloud-editor{box-shadow:0 20px 60px #58413a0d;border:1px solid #efdfd9;border-radius:20px}
+.cloud-editor>h2{font-family:Amiri,serif;font-size:32px}
+.cloud-live-preview{margin:28px auto;display:flex;flex-direction:column;align-items:center;gap:10px}
+.cloud-phone{width:min(100%,365px);height:610px;border:9px solid #383039;border-radius:34px;overflow:hidden;box-shadow:0 25px 55px #31232335;background:#fff}
+.cloud-preview-hint{font-size:12px;color:#997f77;text-align:center}
+.cloud-templates button{background:#fff9f7;border-color:#e1c9bf}
+.cloud-form{border:1px solid #e8d6cf;box-shadow:0 25px 65px #6b49491a;border-radius:22px}
+@keyframes float-envelope{0%,100%{transform:translateY(0)}50%{transform:translateY(-11px)}}
+@keyframes twinkle{0%,100%{opacity:.25;transform:scale(.8)}50%{opacity:1;transform:scale(1.3)}}
+@media(max-width:650px){.public-experience{padding:0;background:#f9e6e7}.public-stage{height:100dvh;min-height:0;border-radius:0;border:0;box-shadow:none;width:100%}.public-stage .invitation-inside{padding:50px 26px}.public-signature{display:none}.cloud-phone{height:560px}}
+@media(prefers-reduced-motion:reduce){.public-stage .envelope,.public-stage .envelope:before{animation:none}}

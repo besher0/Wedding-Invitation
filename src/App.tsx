@@ -6,7 +6,7 @@ import {Invitation,loadInvitations,saveInvitations,starter,Theme,themes} from '.
 type Page='home'|'templates'|'editor'|'dashboard';
 function uid(){return typeof crypto!=='undefined' && 'randomUUID' in crypto?crypto.randomUUID():String(Date.now())}
 function dateText(d:string){if(!d)return 'حدّد التاريخ';const t=new Date(d+'T12:00:00');return isNaN(t.getTime())?'حدّد التاريخ':t.toLocaleDateString('ar-EG',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}
-function InvitePreview({invite,compact=false,musicUrl}:{invite:Invitation,compact?:boolean,musicUrl?:string}){
+export function InvitePreview({invite,compact=false,musicUrl}:{invite:Invitation,compact?:boolean,musicUrl?:string}){
  const [open,setOpen]=useState(false);const [playing,setPlaying]=useState(false);
  const audio=useRef<HTMLAudioElement|null>(null);
  useEffect(()=>{setOpen(false);setPlaying(false);audio.current?.pause()},[invite.theme,invite.id]);
