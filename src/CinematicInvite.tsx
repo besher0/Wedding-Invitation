@@ -45,7 +45,7 @@ export default function CinematicInvite({invite,compact=false}:{invite:Invitatio
  const [opening,setOpening]=useState(false);
  const openingTimer=useRef<ReturnType<typeof setTimeout>|null>(null);
  useEffect(()=>()=>{if(openingTimer.current)clearTimeout(openingTimer.current)},[]);
- const openEnvelope=()=>{if(opening||opened)return;setOpening(true);openingTimer.current=setTimeout(()=>{setOpened(true);setOpening(false)},2700)};
+ const openEnvelope=()=>{if(opening||opened)return;setOpening(true);openingTimer.current=setTimeout(()=>{setOpened(true);setOpening(false)},1500)};
  const [autoPlaying,setAutoPlaying]=useState(false);
  const viewport=useRef<HTMLDivElement>(null);
  const autoRef=useRef(false);
@@ -79,31 +79,13 @@ export default function CinematicInvite({invite,compact=false}:{invite:Invitatio
  const manualStop=()=>{if(autoRef.current){autoRef.current=false;setAutoPlaying(false)}};
  return <div ref={viewport} onWheel={manualStop} onTouchStart={manualStop} onKeyDown={e=>{if(['ArrowDown','ArrowUp','PageDown','PageUp',' '].includes(e.key))manualStop()}} className={'cinematic '+(compact?'cinematic--compact ':'')+'cinematic--'+invite.theme} dir="rtl">
   <AnimatePresence mode="wait">
-   {!opened?<motion.div key="sealed" className={"cin-sealed cin-envelope-scene "+(opening?"cin-envelope-scene--opening":"")} initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:1}} transition={{duration:.2}}>
-     <div className="cin-emboss cin-emboss--tl" aria-hidden="true">❀<span>❧</span></div>
-     <div className="cin-emboss cin-emboss--br" aria-hidden="true">❀<span>❧</span></div>
-     <button className="cin-envelope cin-full-envelope" type="button" onClick={openEnvelope} disabled={opening} aria-label="اضغط على الختم لفتح ظرف الدعوة">
-       <span className="cin-pull-card" aria-hidden="true"><span className="cin-pull-flourish">✧ ❀ ✧</span><span className="cin-pull-heading">دعوة زفاف</span><span className="cin-pull-names">{invite.groom||'العريس'} <em>و</em> {invite.bride||'العروس'}</span><span className="cin-pull-caption">لحظات الفرح أجمل بحضوركم</span></span>
-       <span className="cin-envelope-fold cin-envelope-fold--left"/><span className="cin-envelope-fold cin-envelope-fold--right"/>
-       <span className="cin-satin-ribbon cin-satin-ribbon--vertical"/><span className="cin-satin-ribbon cin-satin-ribbon--horizontal"/>
-       <span className="cin-satin-tail cin-satin-tail--left"/><span className="cin-satin-tail cin-satin-tail--right"/>
-       <span className="cin-satin-bow" aria-hidden="true">
-        <svg viewBox="0 0 220 140" fill="none" xmlns="http://www.w3.org/2000/svg">
-         <defs>
-          <linearGradient id="bowFabric" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#fce4da"/><stop offset=".27" stopColor="#c99297"/><stop offset=".52" stopColor="#fbe2d8"/><stop offset=".8" stopColor="#b57883"/><stop offset="1" stopColor="#e8b6b5"/></linearGradient>
-          <linearGradient id="bowTail" x1="0" y1="0" x2="1" y2="0"><stop stopColor="#aa727e"/><stop offset=".48" stopColor="#f8d5cd"/><stop offset="1" stopColor="#ba8288"/></linearGradient>
-         </defs>
-         <path d="M105 80C91 111 66 119 49 137L40 108C58 99 78 77 94 62Z" fill="url(#bowTail)" stroke="#a9737d" strokeWidth="1.2"/>
-         <path d="M118 77C128 105 154 121 170 137L179 106C155 98 140 74 128 63Z" fill="url(#bowTail)" stroke="#a9737d" strokeWidth="1.2"/>
-         <path d="M108 64C73 15 30 10 13 38C-1 61 30 84 102 78L113 72Z" fill="url(#bowFabric)" stroke="#a5757d" strokeWidth="2"/>
-         <path d="M112 64C147 15 190 10 207 38C221 61 190 84 118 78L107 72Z" fill="url(#bowFabric)" stroke="#a5757d" strokeWidth="2"/>
-         <path d="M100 69C72 50 37 44 25 48M122 69C150 50 185 44 197 48" stroke="#fff3e8" strokeOpacity=".67" strokeWidth="4" strokeLinecap="round"/>
-         <path d="M98 64C101 57 121 57 125 64L126 82C119 91 102 91 97 81Z" fill="#c78e92" stroke="#a8767f" strokeWidth="2"/>
-        </svg>
-       </span>
-       <span className="cin-seal"><span className="cin-seal-imprint"><Heart size={25} strokeWidth={1.5}/></span></span>
+   {!opened?<motion.div key="sealed" className={"cin-gate-scene"+(opening?" cin-gate-opening":"")} initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} transition={{duration:.18}}>
+     <div className="cin-gate-invitation" aria-hidden="true"><span className="cin-gate-flourish">✿ ❀ ✿</span><span className="cin-gate-title">دعوة زفاف</span><span className="cin-gate-names">{invite.groom||'العريس'} <i>و</i> {invite.bride||'العروس'}</span><span className="cin-gate-subtitle">من القلب إلى القلب</span></div>
+     <button type="button" className="cin-gate-trigger" aria-label="افتح بطاقة الزفاف" onClick={openEnvelope} disabled={opening}>
+      <span className="cin-gate-door cin-gate-door--right" aria-hidden="true"><span className="cin-gate-flowers">❀</span><span className="cin-gate-ornament">✧</span></span>
+      <span className="cin-gate-door cin-gate-door--left" aria-hidden="true"><span className="cin-gate-flowers">❀</span><span className="cin-gate-ornament">✧</span></span>
+      <span className="cin-gate-medallion" aria-hidden="true"><Heart size={26} strokeWidth={1.4}/></span>
      </button>
-
    </motion.div>:
    <motion.div key="content" initial={{opacity:0,y:40}} animate={{opacity:1,y:0}} transition={{duration:.9}} className="cin-content">
     <section className="cin-section cin-hero">
