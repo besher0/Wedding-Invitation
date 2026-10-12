@@ -45,7 +45,7 @@ export default function CinematicInvite({invite,compact=false}:{invite:Invitatio
  const [opening,setOpening]=useState(false);
  const openingTimer=useRef<ReturnType<typeof setTimeout>|null>(null);
  useEffect(()=>()=>{if(openingTimer.current)clearTimeout(openingTimer.current)},[]);
- const openEnvelope=()=>{if(opening||opened)return;setOpening(true);openingTimer.current=setTimeout(()=>{setOpened(true);setOpening(false)},2550)};
+ const openEnvelope=()=>{if(opening||opened)return;setOpening(true);openingTimer.current=setTimeout(()=>{setOpened(true);setOpening(false)},3400)};
  const [autoPlaying,setAutoPlaying]=useState(false);
  const viewport=useRef<HTMLDivElement>(null);
  const autoRef=useRef(false);
@@ -79,7 +79,7 @@ export default function CinematicInvite({invite,compact=false}:{invite:Invitatio
  const manualStop=()=>{if(autoRef.current){autoRef.current=false;setAutoPlaying(false)}};
  return <div ref={viewport} onWheel={manualStop} onTouchStart={manualStop} onKeyDown={e=>{if(['ArrowDown','ArrowUp','PageDown','PageUp',' '].includes(e.key))manualStop()}} className={'cinematic '+(compact?'cinematic--compact ':'')+'cinematic--'+invite.theme} dir="rtl">
   <AnimatePresence mode="wait">
-   {!opened?<motion.div key="sealed" className={"cin-gate-scene"+(opening?" cin-gate-opening":"")} initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0,scale:1.035}} transition={{duration:.75,ease:[.22,.61,.36,1]}}>
+   {!opened?<motion.div key="sealed" className={"cin-gate-scene"+(opening?" cin-gate-opening":"")} initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} transition={{duration:.65,ease:[.22,.61,.36,1]}}>
      <div className="cin-gate-invitation" aria-hidden="true"><span className="cin-gate-flourish">✿ ❀ ✿</span><span className="cin-gate-title">دعوة زفاف</span><span className="cin-gate-names">{invite.groom||'العريس'} <i>و</i> {invite.bride||'العروس'}</span><span className="cin-gate-subtitle">من القلب إلى القلب</span></div>
      <button type="button" className="cin-gate-trigger" aria-label="افتح بطاقة الزفاف" onClick={openEnvelope} disabled={opening}>
       <span className="cin-gate-door cin-gate-door--right" aria-hidden="true"><span className="cin-gate-flowers">❀</span><span className="cin-gate-ornament">✧</span></span>

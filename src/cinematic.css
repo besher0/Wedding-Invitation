@@ -263,3 +263,27 @@
 .cin-gate-door{backface-visibility:hidden;transform-style:preserve-3d}
 .cin-gate-invitation{transform-origin:center;will-change:transform,opacity}
 @media(prefers-reduced-motion:reduce){.cin-gate-opening .cin-gate-door--right,.cin-gate-opening .cin-gate-door--left,.cin-gate-opening .cin-gate-medallion,.cin-gate-opening .cin-gate-invitation{animation-duration:.01ms;animation-delay:0ms}}
+
+/* Fix vanishing doors: rotateY beyond 90deg + hidden backfaces made panels disappear.
+   Move the doors outward with a restrained hinge rotation, keep both faces visible
+   and preserve the final frame until the transition to the invitation completes. */
+.cin-gate-door{backface-visibility:visible;transform-style:flat}
+.cin-gate-opening .cin-gate-door--right{animation:cin-gate-slide-right 2.55s cubic-bezier(.22,.65,.2,1) .32s forwards}
+.cin-gate-opening .cin-gate-door--left{animation:cin-gate-slide-left 2.55s cubic-bezier(.22,.65,.2,1) .32s forwards}
+.cin-gate-opening .cin-gate-medallion{animation:cin-gate-seal .65s ease-out both}
+.cin-gate-opening .cin-gate-invitation{animation:cin-card-reveal 2.4s ease-out .55s both}
+@keyframes cin-gate-slide-right{
+  0%{transform:translateX(0) rotateY(0);opacity:1}
+  35%{transform:translateX(12%) rotateY(-12deg);opacity:1}
+  70%{transform:translateX(55%) rotateY(-18deg);opacity:1}
+  100%{transform:translateX(104%) rotateY(0);opacity:1}
+}
+@keyframes cin-gate-slide-left{
+  0%{transform:translateX(0) rotateY(0);opacity:1}
+  35%{transform:translateX(-12%) rotateY(12deg);opacity:1}
+  70%{transform:translateX(-55%) rotateY(18deg);opacity:1}
+  100%{transform:translateX(-104%) rotateY(0);opacity:1}
+}
+@media(prefers-reduced-motion:reduce){
+  .cin-gate-opening .cin-gate-door--right,.cin-gate-opening .cin-gate-door--left,.cin-gate-opening .cin-gate-medallion,.cin-gate-opening .cin-gate-invitation{animation-duration:.01ms;animation-delay:0ms}
+}
