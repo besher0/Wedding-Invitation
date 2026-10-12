@@ -1,6 +1,6 @@
-import {useMemo,useState} from 'react';
+import {useEffect,useMemo,useRef,useState} from 'react';
 import {motion,AnimatePresence} from 'framer-motion';
-import {CalendarDays,MapPin,Heart,ExternalLink,ChevronDown,CalendarPlus,RotateCcw} from 'lucide-react';
+import {CalendarDays,MapPin,Heart,ExternalLink,ChevronDown,CalendarPlus,RotateCcw,Pause,Play} from 'lucide-react';
 import type {Invitation} from './data';
 import './cinematic.css';
 
@@ -24,8 +24,38 @@ function saveCalendar(invite:Invitation){
 }
 export default function CinematicInvite({invite,compact=false}:{invite:Invitation,compact?:boolean}){
  const [opened,setOpened]=useState(false);
+ const [autoPlaying,setAutoPlaying]=useState(false);
+ const viewport=useRef<HTMLDivElement>(null);
+ const autoRef=useRef(false);
+ const lastFrame=useRef<number|null>(null);
  const cal=useMemo(()=>calendarDays(invite.date),[invite.date]);
- return <div className={'cinematic '+(compact?'cinematic--compact ':'')+'cinematic--'+invite.theme} dir="rtl">
+ useEffect(()=>{
+  if(!opened||compact){setAutoPlaying(false);return;}
+  const el=viewport.current;if(!el)return;
+  el.scrollTop=0;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  const timer=window.setTimeout(()=>{autoRef.current=true;setAutoPlaying(true)},2400);
+  return ()=>{window.clearTimeout(timer);autoRef.current=false;lastFrame.current=null};
+ },[opened,compact]);
+ useEffect(()=>{
+  if(!autoPlaying||!opened||compact)return;
+  let frame=0;
+  const tick=(time:number)=>{
+   const el=viewport.current;
+   if(!el||document.hidden){lastFrame.current=null;frame=requestAnimationFrame(tick);return}
+   if(lastFrame.current!==null){
+    const dt=Math.min(time-lastFrame.current,80);
+    el.scrollTop+=dt*0.038;
+    if(el.scrollTop+el.clientHeight>=el.scrollHeight-4){setAutoPlaying(false);autoRef.current=false;return}
+   }
+   lastFrame.current=time;frame=requestAnimationFrame(tick);
+  };
+  frame=requestAnimationFrame(tick);
+  return ()=>{cancelAnimationFrame(frame);lastFrame.current=null};
+ },[autoPlaying,opened,compact]);
+ const manualStop=()=>{if(autoRef.current){autoRef.current=false;setAutoPlaying(false)}};
+ const restart=()=>{setAutoPlaying(false);setOpened(false);viewport.current?.scrollTo({top:0})};
+ return <div ref={viewport} onWheel={manualStop} onTouchStart={manualStop} onKeyDown={e=>{if(['ArrowDown','ArrowUp','PageDown','PageUp',' '].includes(e.key))manualStop()}} className={'cinematic '+(compact?'cinematic--compact ':'')+'cinematic--'+invite.theme} dir="rtl">
   <AnimatePresence mode="wait">
    {!opened?<motion.div key="sealed" className="cin-sealed" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0,scale:1.1,filter:'blur(8px)'}} transition={{duration:.7}}>
      <div className="cin-floral cin-floral--top" aria-hidden="true">❦</div>
@@ -40,6 +70,7 @@ export default function CinematicInvite({invite,compact=false}:{invite:Invitatio
      <span className="cin-floral cin-floral--bottom" aria-hidden="true">❦</span>
    </motion.div>:
    <motion.div key="content" initial={{opacity:0,y:40}} animate={{opacity:1,y:0}} transition={{duration:.9}} className="cin-content">
+    {!compact&&<div className="cin-scroll-controls" role="group" aria-label="التحكم بحركة الدعوة"><span className="cin-scroll-label">{autoPlaying?'العرض التلقائي':'التمرير اليدوي'}</span><button type="button" aria-label={autoPlaying?'إيقاف الحركة':'متابعة الحركة التلقائية'} onClick={()=>{autoRef.current=!autoPlaying;setAutoPlaying(v=>!v)}}>{autoPlaying?<Pause size={16}/>:<Play size={16}/>}</button></div>}
     <section className="cin-section cin-hero">
      <div className="cin-corner cin-corner--tr">❦</div><div className="cin-corner cin-corner--tl">❦</div>
      <span className="cin-kicker">بسم الله الرحمن الرحيم</span>
@@ -69,7 +100,7 @@ export default function CinematicInvite({invite,compact=false}:{invite:Invitatio
     <section className="cin-section cin-ending">
      <div className="cin-divider">✧ ❀ ✧</div><h2>حضوركم يكمل فرحتنا</h2><p>ننتظركم بكل الحب والسعادة</p>
      <Heart size={25} strokeWidth={1.1}/>
-     <button className="cin-reset" onClick={()=>setOpened(false)}><RotateCcw size={14}/> العودة إلى الظرف</button>
+     <button className="cin-reset" onClick={restart}><RotateCcw size={14}/> العودة إلى الظرف</button>
     </section>
    </motion.div>}
   </AnimatePresence>

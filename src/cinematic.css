@@ -49,3 +49,14 @@
 .cinematic--compact .cin-sealed{padding:20px 15px;gap:8px}.cinematic--compact .cin-envelope{width:175px;height:113px}.cinematic--compact .cin-names{font-size:35px}.cinematic--compact .cin-section{min-height:520px;padding:70px 16px}.cinematic--compact .cin-hero{min-height:620px}
 @keyframes cin-bounce{50%{transform:translateY(8px)}}@media(max-width:500px){.cin-content{padding:0 12px}.cin-section{padding:70px 14px}.cin-hero{min-height:94dvh}.cin-sealed{min-height:100dvh}.cin-names{font-size:43px}}
 @media(prefers-reduced-motion:reduce){.cin-down{animation:none}}
+
+/* Guided faux-video scroll: an automatic gentle pan, with manual override. */
+.cin-scroll-controls{position:sticky;top:14px;z-index:8;display:flex;align-items:center;justify-content:center;gap:9px;width:max-content;margin:0 auto -43px;padding:6px 9px 6px 15px;background:color-mix(in srgb,var(--cin-paper) 92%,transparent);border:1px solid var(--cin-edge);border-radius:40px;box-shadow:0 5px 25px #39232414;backdrop-filter:blur(12px);font:600 10px Cairo,sans-serif}
+.cin-scroll-controls button{background:var(--cin-ink);color:var(--cin-paper);border:none;border-radius:50%;width:32px;height:32px;display:grid;place-items:center}
+.cin-scroll-label{white-space:nowrap}
+.cin-section{scroll-margin-top:55px}
+.cin-sealed .cin-envelope{animation:cin-envelope-hover 4s ease-in-out infinite}
+.cin-hero .cin-divider,.cin-ending .cin-divider{animation:cin-shimmer 5s ease-in-out infinite}
+@keyframes cin-envelope-hover{50%{transform:translateY(-7px)}}
+@keyframes cin-shimmer{50%{opacity:.5;letter-spacing:9px}}
+@media(prefers-reduced-motion:reduce){.cin-sealed .cin-envelope,.cin-hero .cin-divider,.cin-ending .cin-divider{animation:none}}
