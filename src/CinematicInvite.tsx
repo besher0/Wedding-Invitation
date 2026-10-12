@@ -39,26 +39,38 @@ function directionsUrl(invite:Invitation):string|null {
  }catch{return null}
  return null;
 }
+function GateFlower({className=''}:{className?:string}){
+ return <svg className={className} viewBox="0 0 160 260" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <path d="M80 252C78 205 70 164 91 125C112 86 106 52 79 18M84 178C52 168 38 152 29 129M85 148C117 137 131 116 132 92M80 214C105 210 120 189 126 174" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+  <path d="M78 202C50 198 39 174 35 165C60 164 74 177 78 202ZM88 156C108 132 129 138 140 131C135 155 114 164 88 156ZM89 126C70 118 63 101 61 90C86 96 92 107 89 126ZM109 81C133 72 139 52 139 42C118 48 103 62 109 81ZM81 231C97 216 117 219 129 213C120 231 100 239 81 231Z" fill="currentColor" fillOpacity=".17" stroke="currentColor" strokeWidth="1.4"/>
+  <path d="M77 14C69 -1 55 5 56 17C41 14 38 30 50 36C43 47 58 57 69 48C81 59 94 49 89 36C105 32 100 16 86 17C89 5 78 0 77 14Z" stroke="currentColor" strokeWidth="2" fill="currentColor" fillOpacity=".09"/>
+  <circle cx="72" cy="30" r="7" stroke="currentColor" strokeWidth="1.8"/>
+  <path d="M27 126C14 111 3 121 11 133C2 139 10 153 23 147C29 158 45 152 44 141C55 134 44 119 33 126Z" stroke="currentColor" strokeWidth="1.6" fill="currentColor" fillOpacity=".11"/>
+  <circle cx="27" cy="139" r="4" stroke="currentColor" strokeWidth="1.4"/>
+  <path d="M128 174C115 161 104 173 113 183C106 195 121 205 132 194C145 202 154 188 145 178C153 166 137 159 128 174Z" stroke="currentColor" strokeWidth="1.6" fill="currentColor" fillOpacity=".1"/>
+  <circle cx="130" cy="184" r="4" stroke="currentColor" strokeWidth="1.4"/>
+  <circle cx="110" cy="113" r="2.8" fill="currentColor" fillOpacity=".36"/><circle cx="56" cy="91" r="2.3" fill="currentColor" fillOpacity=".36"/>
+ </svg>;
+}
 export default function CinematicInvite({invite,compact=false}:{invite:Invitation,compact?:boolean}){
- const [phase,setPhase]=useState<'closed'|'opening'|'opened'>('closed');
+ type OpeningPhase='sealed'|'unsealing'|'doors'|'lift'|'reveal'|'opened';
+ const [phase,setPhase]=useState<OpeningPhase>('sealed');
  const opened=phase==='opened';
- const openingTimer=useRef<ReturnType<typeof setTimeout>|null>(null);
  const audioRef=useRef<HTMLAudioElement|null>(null);
  const [playing,setPlaying]=useState(false);
  const audioUrl=useMemo(()=>{
   try {const url=new URL((invite.musicUrl||'').trim());return url.protocol==='https:'?url.href:''}
   catch{return ''}
  },[invite.musicUrl]);
- useEffect(()=>()=>{if(openingTimer.current)clearTimeout(openingTimer.current)},[]);
  useEffect(()=>{setPlaying(false)},[audioUrl]);
  const openEnvelope=()=>{
-  if(phase!=='closed')return;
-  // Play synchronously from the genuine user interaction; browsers block unattended autoplay.
+  if(phase!=='sealed')return;
+  // Audio is triggered by the actual user tap; no autoplay before interaction.
   if(audioUrl&&audioRef.current)audioRef.current.play().then(()=>setPlaying(true)).catch(()=>setPlaying(false));
-  setPhase('opening');
-  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  openingTimer.current=setTimeout(()=>setPhase('opened'),reduced?120:3000);
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){setPhase('opened');return}
+  setPhase('unsealing');
  };
+ const nextPhase=(expected:OpeningPhase,next:OpeningPhase)=>setPhase(current=>current===expected?next:current);
  const toggleMusic=()=>{
   const audio=audioRef.current;if(!audio)return;
   if(audio.paused)audio.play().then(()=>setPlaying(true)).catch(()=>setPlaying(false));
@@ -135,11 +147,29 @@ export default function CinematicInvite({invite,compact=false}:{invite:Invitatio
      <Heart size={25} strokeWidth={1.1}/>
     </section>
   </div>
-  {phase!=='opened'&&<div className={'cin-gate-scene'+(phase==='opening'?' cin-gate-opening':'')}>
-   <div className="cin-gate-invitation" aria-hidden="true"><span className="cin-gate-flourish">✿ ❀ ✿</span><span className="cin-gate-title">دعوة زفاف</span><span className="cin-gate-names">{invite.groom||'العريس'} <i>و</i> {invite.bride||'العروس'}</span><span className="cin-gate-subtitle">من القلب إلى القلب</span></div>
-   <div className="cin-gate-door cin-gate-door--right" aria-hidden="true"><span className="cin-gate-flowers">❀</span><span className="cin-gate-ornament">✧</span></div>
-   <div className="cin-gate-door cin-gate-door--left" aria-hidden="true"><span className="cin-gate-flowers">❀</span><span className="cin-gate-ornament">✧</span></div>
-   <button type="button" className="cin-gate-trigger" aria-label="اضغط لفتح بطاقة الزفاف" onClick={openEnvelope} disabled={phase!=='closed'}><span className="cin-gate-medallion" aria-hidden="true"><Heart size={27} strokeWidth={1.35}/></span></button>
+  {phase!=='opened'&&<div className={'cin-gate-scene cin-gate-scene--'+phase} onAnimationEnd={event=>{if(event.target===event.currentTarget)nextPhase('reveal','opened')}}>
+   <div className="cin-gate-atmosphere" aria-hidden="true"><span>✦</span><span>✧</span><span>✦</span></div>
+   <div className="cin-gate-book">
+    <div className="cin-gate-sheet" aria-hidden="true" onAnimationEnd={event=>{if(event.target===event.currentTarget)nextPhase('lift','reveal')}}>
+     <span className="cin-gate-sheet-ornament">✧ ❀ ✧</span>
+     <span className="cin-gate-sheet-heading">دعوة زفاف</span>
+     <span className="cin-gate-sheet-names">{invite.groom||'العريس'} <em>و</em> {invite.bride||'العروس'}</span>
+     <span className="cin-gate-sheet-note">يسعدنا أن تشاركونا فرحتنا</span>
+     <span className="cin-gate-sheet-flower">❧</span>
+    </div>
+    <div className="cin-gate-leaf cin-gate-leaf--right" aria-hidden="true">
+     <div className="cin-gate-leaf-edge"/><GateFlower className="cin-gate-flower-art"/>
+     <span className="cin-gate-leaf-detail">✧</span>
+    </div>
+    <div className="cin-gate-leaf cin-gate-leaf--left" aria-hidden="true" onAnimationEnd={event=>{if(event.target===event.currentTarget)nextPhase('doors','lift')}}>
+     <div className="cin-gate-leaf-edge"/><GateFlower className="cin-gate-flower-art"/>
+     <span className="cin-gate-leaf-detail">✧</span>
+    </div>
+    <button className="cin-gate-touch" type="button" disabled={phase!=='sealed'} onClick={openEnvelope} aria-label="افتح دعوة الزفاف">
+     <span className="cin-gate-wax" onAnimationEnd={event=>{if(event.target===event.currentTarget)nextPhase('unsealing','doors')}}><span className="cin-gate-wax-inner"><Heart size={26} strokeWidth={1.3}/></span></span>
+    </button>
+   </div>
+   {phase==='sealed'&&<span className="cin-gate-instruction">المس الختم لفتح الدعوة</span>}
   </div>}
  </div>;
 }
