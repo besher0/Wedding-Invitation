@@ -9,7 +9,11 @@ async function main() {
  app.use(helmet());
  app.setGlobalPrefix('api');
  app.useGlobalPipes(new ValidationPipe({whitelist:true,forbidNonWhitelisted:true,transform:true}));
- app.enableCors({origin:(process.env.CORS_ORIGIN||'http://localhost:5173').split(',').map(s=>s.trim())});
+ const allowedOrigins = (process.env.CORS_ORIGIN || 'http://localhost:5173')
+  .split(',')
+  .map(s => s.trim().replace(/^['\"]|['\"]$/g, '').replace(/\/$/, ''))
+  .filter(Boolean);
+app.enableCors({origin: allowedOrigins, methods: ['GET','HEAD','POST','PATCH','DELETE','OPTIONS'], allowedHeaders: ['Content-Type','Authorization']});
  await app.listen(Number(process.env.PORT)||5000);
 }
 void main();
