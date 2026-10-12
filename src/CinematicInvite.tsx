@@ -45,7 +45,7 @@ export default function CinematicInvite({invite,compact=false}:{invite:Invitatio
  const [opening,setOpening]=useState(false);
  const openingTimer=useRef<ReturnType<typeof setTimeout>|null>(null);
  useEffect(()=>()=>{if(openingTimer.current)clearTimeout(openingTimer.current)},[]);
- const openEnvelope=()=>{if(opening||opened)return;setOpening(true);openingTimer.current=setTimeout(()=>{setOpened(true);setOpening(false)},1500)};
+ const openEnvelope=()=>{if(opening||opened)return;setOpening(true);openingTimer.current=setTimeout(()=>{setOpened(true);setOpening(false)},2550)};
  const [autoPlaying,setAutoPlaying]=useState(false);
  const viewport=useRef<HTMLDivElement>(null);
  const autoRef=useRef(false);
@@ -57,7 +57,7 @@ export default function CinematicInvite({invite,compact=false}:{invite:Invitatio
   const el=viewport.current;if(!el)return;
   el.scrollTop=0;
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-  const timer=window.setTimeout(()=>{autoRef.current=true;setAutoPlaying(true)},2400);
+  const timer=window.setTimeout(()=>{autoRef.current=true;setAutoPlaying(true)},3200);
   return ()=>{window.clearTimeout(timer);autoRef.current=false;lastFrame.current=null};
  },[opened,compact]);
  useEffect(()=>{
@@ -79,7 +79,7 @@ export default function CinematicInvite({invite,compact=false}:{invite:Invitatio
  const manualStop=()=>{if(autoRef.current){autoRef.current=false;setAutoPlaying(false)}};
  return <div ref={viewport} onWheel={manualStop} onTouchStart={manualStop} onKeyDown={e=>{if(['ArrowDown','ArrowUp','PageDown','PageUp',' '].includes(e.key))manualStop()}} className={'cinematic '+(compact?'cinematic--compact ':'')+'cinematic--'+invite.theme} dir="rtl">
   <AnimatePresence mode="wait">
-   {!opened?<motion.div key="sealed" className={"cin-gate-scene"+(opening?" cin-gate-opening":"")} initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} transition={{duration:.18}}>
+   {!opened?<motion.div key="sealed" className={"cin-gate-scene"+(opening?" cin-gate-opening":"")} initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0,scale:1.035}} transition={{duration:.75,ease:[.22,.61,.36,1]}}>
      <div className="cin-gate-invitation" aria-hidden="true"><span className="cin-gate-flourish">✿ ❀ ✿</span><span className="cin-gate-title">دعوة زفاف</span><span className="cin-gate-names">{invite.groom||'العريس'} <i>و</i> {invite.bride||'العروس'}</span><span className="cin-gate-subtitle">من القلب إلى القلب</span></div>
      <button type="button" className="cin-gate-trigger" aria-label="افتح بطاقة الزفاف" onClick={openEnvelope} disabled={opening}>
       <span className="cin-gate-door cin-gate-door--right" aria-hidden="true"><span className="cin-gate-flowers">❀</span><span className="cin-gate-ornament">✧</span></span>
@@ -87,7 +87,7 @@ export default function CinematicInvite({invite,compact=false}:{invite:Invitatio
       <span className="cin-gate-medallion" aria-hidden="true"><Heart size={26} strokeWidth={1.4}/></span>
      </button>
    </motion.div>:
-   <motion.div key="content" initial={{opacity:0,y:40}} animate={{opacity:1,y:0}} transition={{duration:.9}} className="cin-content">
+   <motion.div key="content" initial={{opacity:0,y:30,scale:.97}} animate={{opacity:1,y:0,scale:1}} exit={{opacity:0}} transition={{duration:1.05,ease:[.16,1,.3,1]}} className="cin-content">
     <section className="cin-section cin-hero">
      <div className="cin-corner cin-corner--tr">❦</div><div className="cin-corner cin-corner--tl">❦</div>
      <span className="cin-kicker">بسم الله الرحمن الرحيم</span>
