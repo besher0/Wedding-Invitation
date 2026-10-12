@@ -86,8 +86,21 @@ export default function CinematicInvite({invite,compact=false}:{invite:Invitatio
        <span className="cin-envelope-fold cin-envelope-fold--left"/><span className="cin-envelope-fold cin-envelope-fold--right"/>
        <span className="cin-satin-ribbon cin-satin-ribbon--vertical"/><span className="cin-satin-ribbon cin-satin-ribbon--horizontal"/>
        <span className="cin-satin-tail cin-satin-tail--left"/><span className="cin-satin-tail cin-satin-tail--right"/>
-       <span className="cin-satin-bow"><i/><i/></span>
-       <span className="cin-seal"><Heart size={22} strokeWidth={1.3}/></span>
+       <span className="cin-satin-bow" aria-hidden="true">
+        <svg viewBox="0 0 220 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+         <defs>
+          <linearGradient id="bowFabric" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#fce4da"/><stop offset=".27" stopColor="#c99297"/><stop offset=".52" stopColor="#fbe2d8"/><stop offset=".8" stopColor="#b57883"/><stop offset="1" stopColor="#e8b6b5"/></linearGradient>
+          <linearGradient id="bowTail" x1="0" y1="0" x2="1" y2="0"><stop stopColor="#aa727e"/><stop offset=".48" stopColor="#f8d5cd"/><stop offset="1" stopColor="#ba8288"/></linearGradient>
+         </defs>
+         <path d="M105 80C91 111 66 119 49 137L40 108C58 99 78 77 94 62Z" fill="url(#bowTail)" stroke="#a9737d" strokeWidth="1.2"/>
+         <path d="M118 77C128 105 154 121 170 137L179 106C155 98 140 74 128 63Z" fill="url(#bowTail)" stroke="#a9737d" strokeWidth="1.2"/>
+         <path d="M108 64C73 15 30 10 13 38C-1 61 30 84 102 78L113 72Z" fill="url(#bowFabric)" stroke="#a5757d" strokeWidth="2"/>
+         <path d="M112 64C147 15 190 10 207 38C221 61 190 84 118 78L107 72Z" fill="url(#bowFabric)" stroke="#a5757d" strokeWidth="2"/>
+         <path d="M100 69C72 50 37 44 25 48M122 69C150 50 185 44 197 48" stroke="#fff3e8" strokeOpacity=".67" strokeWidth="4" strokeLinecap="round"/>
+         <path d="M98 64C101 57 121 57 125 64L126 82C119 91 102 91 97 81Z" fill="#c78e92" stroke="#a8767f" strokeWidth="2"/>
+        </svg>
+       </span>
+       <span className="cin-seal"><span className="cin-seal-imprint"><Heart size={25} strokeWidth={1.5}/></span></span>
      </button>
 
    </motion.div>:
