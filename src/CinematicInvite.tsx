@@ -1,6 +1,5 @@
 import {useEffect,useMemo,useRef,useState} from 'react';
-import {motion,AnimatePresence} from 'framer-motion';
-import {CalendarDays,MapPin,Heart,ExternalLink,ChevronDown,CalendarPlus} from 'lucide-react';
+import {CalendarDays,MapPin,Heart,ExternalLink,ChevronDown,CalendarPlus,Volume2,VolumeX} from 'lucide-react';
 import type {Invitation} from './data';
 import './cinematic.css';
 
@@ -41,11 +40,30 @@ function directionsUrl(invite:Invitation):string|null {
  return null;
 }
 export default function CinematicInvite({invite,compact=false}:{invite:Invitation,compact?:boolean}){
- const [opened,setOpened]=useState(false);
- const [opening,setOpening]=useState(false);
+ const [phase,setPhase]=useState<'closed'|'opening'|'opened'>('closed');
+ const opened=phase==='opened';
  const openingTimer=useRef<ReturnType<typeof setTimeout>|null>(null);
+ const audioRef=useRef<HTMLAudioElement|null>(null);
+ const [playing,setPlaying]=useState(false);
+ const audioUrl=useMemo(()=>{
+  try {const url=new URL((invite.musicUrl||'').trim());return url.protocol==='https:'?url.href:''}
+  catch{return ''}
+ },[invite.musicUrl]);
  useEffect(()=>()=>{if(openingTimer.current)clearTimeout(openingTimer.current)},[]);
- const openEnvelope=()=>{if(opening||opened)return;setOpening(true);openingTimer.current=setTimeout(()=>{setOpened(true);setOpening(false)},3400)};
+ useEffect(()=>{setPlaying(false)},[audioUrl]);
+ const openEnvelope=()=>{
+  if(phase!=='closed')return;
+  // Play synchronously from the genuine user interaction; browsers block unattended autoplay.
+  if(audioUrl&&audioRef.current)audioRef.current.play().then(()=>setPlaying(true)).catch(()=>setPlaying(false));
+  setPhase('opening');
+  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  openingTimer.current=setTimeout(()=>setPhase('opened'),reduced?120:3000);
+ };
+ const toggleMusic=()=>{
+  const audio=audioRef.current;if(!audio)return;
+  if(audio.paused)audio.play().then(()=>setPlaying(true)).catch(()=>setPlaying(false));
+  else {audio.pause();setPlaying(false)}
+ };
  const [autoPlaying,setAutoPlaying]=useState(false);
  const viewport=useRef<HTMLDivElement>(null);
  const autoRef=useRef(false);
@@ -77,17 +95,10 @@ export default function CinematicInvite({invite,compact=false}:{invite:Invitatio
   return ()=>{cancelAnimationFrame(frame);lastFrame.current=null};
  },[autoPlaying,opened,compact]);
  const manualStop=()=>{if(autoRef.current){autoRef.current=false;setAutoPlaying(false)}};
- return <div ref={viewport} onWheel={manualStop} onTouchStart={manualStop} onKeyDown={e=>{if(['ArrowDown','ArrowUp','PageDown','PageUp',' '].includes(e.key))manualStop()}} className={'cinematic '+(compact?'cinematic--compact ':'')+'cinematic--'+invite.theme} dir="rtl">
-  <AnimatePresence mode="wait">
-   {!opened?<motion.div key="sealed" className={"cin-gate-scene"+(opening?" cin-gate-opening":"")} initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} transition={{duration:.65,ease:[.22,.61,.36,1]}}>
-     <div className="cin-gate-invitation" aria-hidden="true"><span className="cin-gate-flourish">✿ ❀ ✿</span><span className="cin-gate-title">دعوة زفاف</span><span className="cin-gate-names">{invite.groom||'العريس'} <i>و</i> {invite.bride||'العروس'}</span><span className="cin-gate-subtitle">من القلب إلى القلب</span></div>
-     <button type="button" className="cin-gate-trigger" aria-label="افتح بطاقة الزفاف" onClick={openEnvelope} disabled={opening}>
-      <span className="cin-gate-door cin-gate-door--right" aria-hidden="true"><span className="cin-gate-flowers">❀</span><span className="cin-gate-ornament">✧</span></span>
-      <span className="cin-gate-door cin-gate-door--left" aria-hidden="true"><span className="cin-gate-flowers">❀</span><span className="cin-gate-ornament">✧</span></span>
-      <span className="cin-gate-medallion" aria-hidden="true"><Heart size={26} strokeWidth={1.4}/></span>
-     </button>
-   </motion.div>:
-   <motion.div key="content" initial={{opacity:0,y:30,scale:.97}} animate={{opacity:1,y:0,scale:1}} exit={{opacity:0}} transition={{duration:1.05,ease:[.16,1,.3,1]}} className="cin-content">
+ return <div ref={viewport} onWheel={manualStop} onTouchStart={manualStop} onKeyDown={e=>{if(['ArrowDown','ArrowUp','PageDown','PageUp',' '].includes(e.key))manualStop()}} className={'cinematic cinematic--'+phase+' '+(compact?'cinematic--compact ':'')+'cinematic--'+invite.theme} dir="rtl">
+  {audioUrl&&<audio ref={audioRef} src={audioUrl} loop preload="none" onPlay={()=>setPlaying(true)} onPause={()=>setPlaying(false)}/>}
+  {audioUrl&&opened&&<div className="cin-audio-toolbar"><button type="button" onClick={toggleMusic} aria-label={playing?'إيقاف الموسيقى':'تشغيل الموسيقى'} title={playing?'إيقاف الموسيقى':'تشغيل الموسيقى'}>{playing?<Volume2 size={19}/>:<VolumeX size={19}/>}</button></div>}
+  <div className="cin-content">
     <section className="cin-section cin-hero">
      <div className="cin-corner cin-corner--tr">❦</div><div className="cin-corner cin-corner--tl">❦</div>
      <span className="cin-kicker">بسم الله الرحمن الرحيم</span>
@@ -123,7 +134,12 @@ export default function CinematicInvite({invite,compact=false}:{invite:Invitatio
      <div className="cin-divider">✧ ❀ ✧</div><h2>حضوركم يكمل فرحتنا</h2><p>ننتظركم بكل الحب والسعادة</p>
      <Heart size={25} strokeWidth={1.1}/>
     </section>
-   </motion.div>}
-  </AnimatePresence>
+  </div>
+  {phase!=='opened'&&<div className={'cin-gate-scene'+(phase==='opening'?' cin-gate-opening':'')}>
+   <div className="cin-gate-invitation" aria-hidden="true"><span className="cin-gate-flourish">✿ ❀ ✿</span><span className="cin-gate-title">دعوة زفاف</span><span className="cin-gate-names">{invite.groom||'العريس'} <i>و</i> {invite.bride||'العروس'}</span><span className="cin-gate-subtitle">من القلب إلى القلب</span></div>
+   <div className="cin-gate-door cin-gate-door--right" aria-hidden="true"><span className="cin-gate-flowers">❀</span><span className="cin-gate-ornament">✧</span></div>
+   <div className="cin-gate-door cin-gate-door--left" aria-hidden="true"><span className="cin-gate-flowers">❀</span><span className="cin-gate-ornament">✧</span></div>
+   <button type="button" className="cin-gate-trigger" aria-label="اضغط لفتح بطاقة الزفاف" onClick={openEnvelope} disabled={phase!=='closed'}><span className="cin-gate-medallion" aria-hidden="true"><Heart size={27} strokeWidth={1.35}/></span></button>
+  </div>}
  </div>;
 }

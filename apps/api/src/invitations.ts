@@ -15,7 +15,7 @@ class UpdateDto {
  @IsOptional() @IsObject() content?:Record<string,unknown>;
 }
 function checked(content:Record<string,unknown>):Prisma.InputJsonObject {
- const allowed=new Set(['groom','bride','groomFamily','brideFamily','intro','invitedBy','date','time','venue','address','mapUrl','gpsLocation']);
+ const allowed=new Set(['groom','bride','groomFamily','brideFamily','intro','invitedBy','date','time','venue','address','mapUrl','gpsLocation','musicUrl']);
  for(const [k,v] of Object.entries(content)){if(!allowed.has(k)||typeof v!=='string'||v.length>1000)throw new BadRequestException('Invalid invitation content');}
  return content as Prisma.InputJsonObject;
 }
