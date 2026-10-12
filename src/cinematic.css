@@ -253,3 +253,13 @@
 .cin-content .cin-section{background:var(--cin-paper)}
 .cin-content .cin-hero .cin-divider,.cin-ending .cin-divider{animation:none}
 @media(prefers-reduced-motion:reduce){.cin-gate-opening .cin-gate-door--right,.cin-gate-opening .cin-gate-door--left,.cin-gate-opening .cin-gate-medallion{animation-duration:.01ms}}
+
+/* Choreographed gatefold: seal (0-.35s), doors (.3-2s), content soft dissolve. */
+.cin-gate-opening .cin-gate-door--right{animation:cin-gate-right 1.9s cubic-bezier(.2,.65,.18,1) .32s both}
+.cin-gate-opening .cin-gate-door--left{animation:cin-gate-left 1.9s cubic-bezier(.2,.65,.18,1) .32s both}
+.cin-gate-opening .cin-gate-medallion{animation:cin-gate-seal .48s ease-out both}
+.cin-gate-opening .cin-gate-invitation{animation:cin-card-reveal 1.65s ease-out .5s both}
+@keyframes cin-card-reveal{0%{opacity:.7;transform:scale(.97)}100%{opacity:1;transform:scale(1)}}
+.cin-gate-door{backface-visibility:hidden;transform-style:preserve-3d}
+.cin-gate-invitation{transform-origin:center;will-change:transform,opacity}
+@media(prefers-reduced-motion:reduce){.cin-gate-opening .cin-gate-door--right,.cin-gate-opening .cin-gate-door--left,.cin-gate-opening .cin-gate-medallion,.cin-gate-opening .cin-gate-invitation{animation-duration:.01ms;animation-delay:0ms}}
