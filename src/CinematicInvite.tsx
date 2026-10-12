@@ -56,6 +56,14 @@ export default function CinematicInvite({invite,compact=false}:{invite:Invitatio
  type OpeningPhase='sealed'|'unsealing'|'doors'|'lift'|'reveal'|'opened';
  const [phase,setPhase]=useState<OpeningPhase>('sealed');
  const opened=phase==='opened';
+ const sceneRef=useRef<HTMLDivElement>(null);
+ const leftRef=useRef<HTMLDivElement>(null);
+ const rightRef=useRef<HTMLDivElement>(null);
+ const cardRef=useRef<HTMLDivElement>(null);
+ const sealRef=useRef<HTMLSpanElement>(null);
+ const busyRef=useRef(false);
+ const disposed=useRef(false);
+ useEffect(()=>{disposed.current=false;return ()=>{disposed.current=true}},[]);
  const audioRef=useRef<HTMLAudioElement|null>(null);
  const [playing,setPlaying]=useState(false);
  const audioUrl=useMemo(()=>{
@@ -63,14 +71,37 @@ export default function CinematicInvite({invite,compact=false}:{invite:Invitatio
   catch{return ''}
  },[invite.musicUrl]);
  useEffect(()=>{setPlaying(false)},[audioUrl]);
- const openEnvelope=()=>{
-  if(phase!=='sealed')return;
-  // Audio is triggered by the actual user tap; no autoplay before interaction.
+ const openEnvelope=async()=>{
+  if(phase!=='sealed'||busyRef.current)return;
+  busyRef.current=true;
   if(audioUrl&&audioRef.current)audioRef.current.play().then(()=>setPlaying(true)).catch(()=>setPlaying(false));
-  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){setPhase('opened');return}
-  setPhase('unsealing');
+  const scene=sceneRef.current,left=leftRef.current,right=rightRef.current,card=cardRef.current,seal=sealRef.current;
+  if(!scene||!left||!right||!card||!seal)return;
+  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const run=(el:HTMLElement,frames:Keyframe[],ms:number,easing='ease-in-out')=>el.animate(frames,{duration:reduced?Math.max(220,ms*.45):ms,easing,fill:'forwards'}).finished;
+  try{
+   setPhase('unsealing');
+   await run(seal,[{transform:'scale(1)',opacity:1},{transform:'scale(1.11)',opacity:1,offset:.38},{transform:'scale(.55) rotate(12deg)',opacity:0}],630,'cubic-bezier(.22,.62,.2,1)');
+   if(disposed.current)return;
+   setPhase('doors');
+   await Promise.all([
+    run(left,[{transform:'rotateY(0deg)'},{transform:'rotateY(-12deg)',offset:.24},{transform:'rotateY(-46deg)',offset:.62},{transform:'rotateY(-78deg)'}],2100,'cubic-bezier(.2,.64,.2,1)'),
+    run(right,[{transform:'rotateY(0deg)'},{transform:'rotateY(12deg)',offset:.24},{transform:'rotateY(46deg)',offset:.62},{transform:'rotateY(78deg)'}],2100,'cubic-bezier(.2,.64,.2,1)')
+   ]);
+   if(disposed.current)return;
+   setPhase('lift');card.style.zIndex='7';
+   await run(card,[{transform:'translate3d(0,5%,0) scale(.92)'},{transform:'translate3d(0,-12%,0) scale(1)',offset:.62},{transform:'translate3d(0,-21%,0) scale(1.08)'}],1350,'cubic-bezier(.18,.78,.21,1)');
+   if(disposed.current)return;
+   setPhase('reveal');
+   await Promise.all([
+    run(card,[{transform:'translate3d(0,-21%,0) scale(1.08)',opacity:1},{transform:'translate3d(0,-24%,0) scale(1.18)',opacity:1,offset:.5},{transform:'translate3d(0,-24%,0) scale(1.25)',opacity:0}],1100),
+    run(scene,[{opacity:1},{opacity:1,offset:.25},{opacity:0}],1200)
+   ]);
+   if(!disposed.current)setPhase('opened');
+  }catch{
+   if(!disposed.current){setPhase('reveal');await new Promise(resolve=>setTimeout(resolve,850));if(!disposed.current)setPhase('opened')}
+  }
  };
- const nextPhase=(expected:OpeningPhase,next:OpeningPhase)=>setPhase(current=>current===expected?next:current);
  const toggleMusic=()=>{
   const audio=audioRef.current;if(!audio)return;
   if(audio.paused)audio.play().then(()=>setPlaying(true)).catch(()=>setPlaying(false));
@@ -147,29 +178,29 @@ export default function CinematicInvite({invite,compact=false}:{invite:Invitatio
      <Heart size={25} strokeWidth={1.1}/>
     </section>
   </div>
-  {phase!=='opened'&&<div className={'cin-gate-scene cin-gate-scene--'+phase} onAnimationEnd={event=>{if(event.target===event.currentTarget)nextPhase('reveal','opened')}}>
+  {phase!=='opened'&&<div ref={sceneRef} className={'cin-gate-scene cin-gate-scene--'+phase}>
    <div className="cin-gate-atmosphere" aria-hidden="true"><span>✦</span><span>✧</span><span>✦</span></div>
-   <div className="cin-gate-book">
-    <div className="cin-gate-sheet" aria-hidden="true" onAnimationEnd={event=>{if(event.target===event.currentTarget)nextPhase('lift','reveal')}}>
+   <div className="cin-gate-book"><span className="cin-gate-book-corner cin-gate-book-corner--tl" aria-hidden="true">❧</span><span className="cin-gate-book-corner cin-gate-book-corner--br" aria-hidden="true">❧</span>
+    <div ref={cardRef} className="cin-gate-sheet" aria-hidden="true">
      <span className="cin-gate-sheet-ornament">✧ ❀ ✧</span>
      <span className="cin-gate-sheet-heading">دعوة زفاف</span>
      <span className="cin-gate-sheet-names">{invite.groom||'العريس'} <em>و</em> {invite.bride||'العروس'}</span>
      <span className="cin-gate-sheet-note">يسعدنا أن تشاركونا فرحتنا</span>
      <span className="cin-gate-sheet-flower">❧</span>
     </div>
-    <div className="cin-gate-leaf cin-gate-leaf--right" aria-hidden="true">
+    <div ref={rightRef} className="cin-gate-leaf cin-gate-leaf--right" aria-hidden="true">
      <div className="cin-gate-leaf-edge"/><GateFlower className="cin-gate-flower-art"/>
-     <span className="cin-gate-leaf-detail">✧</span>
+     <span className="cin-gate-leaf-detail">✦ ♡ ✦</span>
     </div>
-    <div className="cin-gate-leaf cin-gate-leaf--left" aria-hidden="true" onAnimationEnd={event=>{if(event.target===event.currentTarget)nextPhase('doors','lift')}}>
+    <div ref={leftRef} className="cin-gate-leaf cin-gate-leaf--left" aria-hidden="true">
      <div className="cin-gate-leaf-edge"/><GateFlower className="cin-gate-flower-art"/>
-     <span className="cin-gate-leaf-detail">✧</span>
+     <span className="cin-gate-leaf-detail">✦ ♡ ✦</span>
     </div>
     <button className="cin-gate-touch" type="button" disabled={phase!=='sealed'} onClick={openEnvelope} aria-label="افتح دعوة الزفاف">
-     <span className="cin-gate-wax" onAnimationEnd={event=>{if(event.target===event.currentTarget)nextPhase('unsealing','doors')}}><span className="cin-gate-wax-inner"><Heart size={26} strokeWidth={1.3}/></span></span>
+     <span ref={sealRef} className="cin-gate-wax"><span className="cin-gate-wax-inner"><Heart size={26} strokeWidth={1.3}/></span></span>
     </button>
    </div>
-   {phase==='sealed'&&<span className="cin-gate-instruction">المس الختم لفتح الدعوة</span>}
+   <span className={'cin-gate-instruction'+(phase==='sealed'?'':' cin-gate-instruction--hidden')}>المس الختم لفتح الدعوة</span>
   </div>}
  </div>;
 }
