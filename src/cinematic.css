@@ -184,3 +184,22 @@
 .cin-content .cin-hero{background:var(--cin-paper)}
 @media(max-width:650px){.cin-envelope-scene .cin-full-envelope.cin-envelope{height:100%;width:100%}}
 @media(prefers-reduced-motion:reduce){.cin-envelope-scene--opening .cin-envelope-fold,.cin-envelope-scene--opening .cin-envelope-fold--right{animation-duration:.01ms}.cin-full-envelope .cin-satin-ribbon,.cin-full-envelope .cin-satin-tail,.cin-full-envelope .cin-satin-bow,.cin-full-envelope .cin-seal{transition-duration:.01ms}}
+
+/* Premium physical envelope surface: linen, folded paper, satin and wax medallion. */
+.cin-envelope-scene{background:linear-gradient(140deg,#e9dfd6,#fbf6ef 45%,#e4d5ce)}
+.cin-envelope-scene:before{background:repeating-linear-gradient(0deg,#ffffff14 0px,#ffffff14 1px,#c9b9ac09 2px,#ffffff0a 4px),linear-gradient(122deg,#fffdf7,#f7f1e9 61%,#eee3dc)}
+.cin-envelope-scene:after{background:radial-gradient(ellipse at 50% 46%,transparent 35%,#b69c8a20 100%)}
+.cin-full-envelope .cin-envelope-fold{background:linear-gradient(140deg,#fdf9f2 0%,#e8dad0 51%,#fffefb 70%);filter:drop-shadow(2px 0 3px #8d726326)}
+.cin-full-envelope .cin-envelope-fold--right{background:linear-gradient(220deg,#fffefb 8%,#e9dcd3 52%,#fffaf5 85%);filter:drop-shadow(-2px 0 3px #8d72632b)}
+.cin-full-envelope .cin-satin-ribbon--vertical{background:linear-gradient(90deg,#966b76 0%,#c18a91 10%,#f5d2cc 35%,#fbe3d9 51%,#d6a2a4 75%,#a46f78 97%);box-shadow:inset 2px 0 5px #764c5466,2px 0 6px #77505a32}
+.cin-full-envelope .cin-satin-ribbon--horizontal{background:linear-gradient(180deg,#ad7581,#dba6a5 20%,#ffe5d7 53%,#cf969b 82%,#a66d79);box-shadow:inset 0 2px 5px #764c5466,0 3px 7px #77505a42}
+.cin-full-envelope .cin-satin-bow{width:clamp(165px,57%,240px);height:auto;aspect-ratio:220/140;top:50%;z-index:5;transform:translate(-50%,-49%);filter:drop-shadow(0 5px 5px #78565a70)}
+.cin-satin-bow svg{display:block;width:100%;height:100%}
+.cin-satin-bow i{display:none}
+.cin-full-envelope .cin-satin-tail{display:none}
+.cin-full-envelope .cin-seal{top:50%;width:70px;height:70px;z-index:7;background:radial-gradient(circle at 30% 23%,#f8e3d2,#d8b4a8 44%,#b58684 83%,#966e70);border:5px double #ecd3c5;color:#76505a;box-shadow:inset 0 1px 4px #fff7ec, inset 0 -5px 9px #74525255,0 5px 15px #704f5c65;transform:translate(-50%,-50%);transition:transform .8s .12s,opacity .5s .8s}
+.cin-seal-imprint{width:48px;height:48px;display:grid;place-items:center;border-radius:50%;border:1px solid #9e70707f;box-shadow:inset 0 1px 3px #fff6ed7a;transform:rotate(-12deg)}
+.cin-envelope-scene--opening .cin-satin-bow{transform:translate(-50%,-180%) scale(.65);opacity:0}
+.cin-envelope-scene--opening .cin-seal{transform:translate(-50%,-145%) scale(.45);opacity:0}
+.cin-full-envelope:focus-visible{outline:3px solid #b88390;outline-offset:-6px}
+@media(prefers-reduced-motion:reduce){.cin-full-envelope .cin-seal,.cin-full-envelope .cin-satin-bow{transition-duration:.01ms}}
