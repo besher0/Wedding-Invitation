@@ -90,3 +90,26 @@
 .cin-location-label{font:600 13px Cairo,sans-serif;letter-spacing:1px;opacity:.8}
 .cin-venue-section .cin-map{max-width:100%;white-space:normal;line-height:1.8;text-align:center}
 .cin-envelope:focus-visible{outline:3px solid var(--cin-ink);outline-offset:5px}
+
+/* Stable vertical-only invitation viewport and denser typography. */
+.cinematic{overflow-x:hidden;overflow-y:auto;overscroll-behavior-x:none;scroll-behavior:auto;max-width:100%;contain:layout paint}
+.cin-sealed,.cin-content,.cin-section{width:100%;max-width:100%;min-width:0;overflow-x:clip}
+.cin-content{padding-inline:12px}
+.cin-content:before{inset:10px}
+.cin-section{min-height:490px;padding:48px 22px;gap:9px}
+.cin-hero{min-height:660px}
+.cin-kicker{margin-bottom:6px}
+.cin-invited,.cin-intro,.cin-venue-section p{margin:3px 0;line-height:1.65}
+.cin-verse{line-height:1.6}
+.cin-names,.cin-couple-names{margin:4px 0;line-height:1.35}
+.cin-family-pair{padding:10px 0;gap:12px}
+.cin-family-column{gap:0}
+.cin-family-column strong{margin-top:6px}
+.cin-divider{line-height:1.3}
+.cin-date-line{padding:6px 12px}
+.cin-section h2,.cin-section h3{margin:2px 0}
+.cin-calendar{padding:14px}
+.cin-ending{min-height:390px}
+.cin-date-section,.cin-venue-section{min-height:480px}
+.cin-hero .cin-divider,.cin-ending .cin-divider{animation:none}
+@media(max-width:500px){.cin-content{padding-inline:8px}.cin-section{padding:45px 15px;gap:8px}.cin-hero{min-height:680px}.cin-family-pair{gap:8px;padding:8px 0}.cin-date-section,.cin-venue-section{min-height:450px}.cin-hero .cin-corner{font-size:60px}}
