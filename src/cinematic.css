@@ -155,3 +155,32 @@
 .cin-content .cin-verse{font-size:19px}
 @media(max-width:500px){.cin-envelope-scene{min-height:100%}.cin-content .cin-hero{min-height:620px}.cin-content .cin-section{padding-inline:11px}.cin-full-envelope.cin-envelope{height:clamp(190px,32vh,280px)}}
 @media(prefers-reduced-motion:reduce){.cin-full-envelope.cin-envelope{animation:none}}
+
+/* Full-screen ivory envelope, closely following the reference video opening. */
+.cin-envelope-scene{height:100%;min-height:100%;padding:0!important;background:#fffefa;overflow:hidden;justify-content:center;gap:0}
+.cin-envelope-scene:before{inset:0;border:none;background:linear-gradient(135deg,#fdfbf8,#fffefa 48%,#f8f3f0);opacity:1}
+.cin-envelope-scene:after{content:'';position:absolute;inset:0;pointer-events:none;z-index:1;background:radial-gradient(ellipse at 50% 50%,transparent 32%,#f3e6e042 100%)}
+.cin-envelope-scene .cin-emboss{font-size:clamp(110px,32vw,190px);opacity:.23;color:#cdbdb5;z-index:2}
+.cin-envelope-scene .cin-emboss--tl{top:2%;left:-9%;transform:rotate(-35deg)}
+.cin-envelope-scene .cin-emboss--br{bottom:2%;right:-9%;transform:rotate(145deg)}
+.cin-envelope-scene .cin-full-envelope.cin-envelope{height:100%;width:100%;margin:0;display:block;position:absolute;inset:0;border:0;border-radius:0;box-shadow:none;animation:none;background:transparent;z-index:3;transform:none;transition:none;overflow:hidden}
+.cin-full-envelope .cin-envelope-fold{inset:0;clip-path:polygon(0 0,50% 50%,0 100%);background:linear-gradient(90deg,#f3eae5 0%,#fffcf8 80%);filter:none;box-shadow:inset -2px 0 8px #d5c4b877}
+.cin-full-envelope .cin-envelope-fold--right{clip-path:polygon(100% 0,50% 50%,100% 100%);background:linear-gradient(270deg,#f3eae5 0%,#fffdfa 80%)}
+.cin-full-envelope .cin-satin-ribbon--vertical{height:100%;top:0;bottom:0;width:clamp(26px,10%,45px);left:50%;transform:translateX(-50%);transition:transform .85s ease-in .14s,opacity .5s .8s}
+.cin-full-envelope .cin-satin-ribbon--horizontal{height:clamp(26px,5%,45px);top:50%;left:0;right:0;transform:translateY(-50%);transition:transform .85s ease-in .14s,opacity .5s .8s}
+.cin-full-envelope .cin-satin-tail{top:51%;transition:transform .8s .12s,opacity .4s .5s}
+.cin-full-envelope .cin-satin-bow{top:50%;transition:transform 1s .1s,opacity .5s .9s}
+.cin-full-envelope .cin-seal{top:50%;transition:transform .85s .2s,opacity .4s .9s}
+.cin-envelope-scene--opening .cin-satin-ribbon--vertical{transform:translate(-50%,-105%);opacity:0}
+.cin-envelope-scene--opening .cin-satin-ribbon--horizontal{transform:translate(-110%,-50%);opacity:0}
+.cin-envelope-scene--opening .cin-satin-tail--left{transform:translate(-140px,80px) rotate(80deg);opacity:0}
+.cin-envelope-scene--opening .cin-satin-tail--right{transform:translate(130px,80px) rotate(-80deg);opacity:0}
+.cin-envelope-scene--opening .cin-satin-bow{transform:translate(-50%,-180%) scale(.6);opacity:0}
+.cin-envelope-scene--opening .cin-seal{transform:translate(-50%,-165%) scale(.45);opacity:0}
+.cin-envelope-scene--opening .cin-envelope-fold{animation:cin-fold-left .85s .8s both}
+.cin-envelope-scene--opening .cin-envelope-fold--right{animation:cin-fold-right .85s .8s both}
+@keyframes cin-fold-left{to{transform:translateX(-110%);opacity:0}}
+@keyframes cin-fold-right{to{transform:translateX(110%);opacity:0}}
+.cin-content .cin-hero{background:var(--cin-paper)}
+@media(max-width:650px){.cin-envelope-scene .cin-full-envelope.cin-envelope{height:100%;width:100%}}
+@media(prefers-reduced-motion:reduce){.cin-envelope-scene--opening .cin-envelope-fold,.cin-envelope-scene--opening .cin-envelope-fold--right{animation-duration:.01ms}.cin-full-envelope .cin-satin-ribbon,.cin-full-envelope .cin-satin-tail,.cin-full-envelope .cin-satin-bow,.cin-full-envelope .cin-seal{transition-duration:.01ms}}
