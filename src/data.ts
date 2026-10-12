@@ -1,6 +1,6 @@
 export type Theme = 'rose' | 'gold' | 'night';
 export type Invitation = {
-  id: string; title: string; groom: string; bride: string; intro: string; invitedBy: string;
+  id: string; title: string; groom: string; bride: string; groomFamily: string; brideFamily: string; intro: string; invitedBy: string;
   date: string; time: string; venue: string; address: string; mapUrl: string;
   theme: Theme; musicName: string; createdAt: string;
 };
@@ -10,7 +10,7 @@ export const themes: Record<Theme,{label:string,caption:string}> = {
   night:{label:'نجوم الليل',caption:'داكن أنيق'}
 };
 export const starter: Invitation = {
- id:'demo',title:'دعوة زفافنا',groom:'علي',bride:'رزان',
+ id:'demo',title:'دعوة زفافنا',groom:'علي',bride:'رزان',groomFamily:'فلان',brideFamily:'فلان',
  intro:'بكل الحب والفرح، نتشرف بدعوتكم لمشاركتنا أجمل لحظات العمر',
  invitedBy:'تتشرف عائلتا العروسين بدعوتكم لحضور حفل الزفاف',
  date:'2026-11-20',time:'19:00',venue:'قاعة الأفراح',address:'عنوان القاعة هنا',

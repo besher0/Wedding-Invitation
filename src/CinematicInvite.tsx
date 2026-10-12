@@ -1,6 +1,6 @@
 import {useEffect,useMemo,useRef,useState} from 'react';
 import {motion,AnimatePresence} from 'framer-motion';
-import {CalendarDays,MapPin,Heart,ExternalLink,ChevronDown,CalendarPlus,RotateCcw,Pause,Play} from 'lucide-react';
+import {CalendarDays,MapPin,Heart,ExternalLink,ChevronDown,CalendarPlus,RotateCcw} from 'lucide-react';
 import type {Invitation} from './data';
 import './cinematic.css';
 
@@ -70,14 +70,18 @@ export default function CinematicInvite({invite,compact=false}:{invite:Invitatio
      <span className="cin-floral cin-floral--bottom" aria-hidden="true">❦</span>
    </motion.div>:
    <motion.div key="content" initial={{opacity:0,y:40}} animate={{opacity:1,y:0}} transition={{duration:.9}} className="cin-content">
-    {!compact&&<div className="cin-scroll-controls" role="group" aria-label="التحكم بحركة الدعوة"><span className="cin-scroll-label">{autoPlaying?'العرض التلقائي':'التمرير اليدوي'}</span><button type="button" aria-label={autoPlaying?'إيقاف الحركة':'متابعة الحركة التلقائية'} onClick={()=>{autoRef.current=!autoPlaying;setAutoPlaying(v=>!v)}}>{autoPlaying?<Pause size={16}/>:<Play size={16}/>}</button></div>}
     <section className="cin-section cin-hero">
      <div className="cin-corner cin-corner--tr">❦</div><div className="cin-corner cin-corner--tl">❦</div>
      <span className="cin-kicker">بسم الله الرحمن الرحيم</span>
+     <p className="cin-verse">﴿ وَجَعَلَ بَيْنَكُم مَوَدَّةً وَرَحْمَةً ﴾</p>
+     <div className="cin-family-pair" aria-label="أسماء العائلتين">
+       <div className="cin-family-line"><span className="cin-family-title">حرم السيد {invite.groomFamily||'فلان'}</span><strong>{invite.groom||'العريس'}</strong></div>
+       <div className="cin-family-line"><span className="cin-family-title">حرم السيد {invite.brideFamily||'فلان'}</span><strong>{invite.bride||'العروس'}</strong></div>
+     </div>
      <p className="cin-invited">{invite.invitedBy||'تتشرف عائلتا العروسين بدعوتكم لحضور حفل الزفاف'}</p>
      <div className="cin-divider">✧ ❀ ✧</div>
      <span className="cin-label">نحتفل معاً بزفاف</span>
-     <h1 className="cin-names">{invite.groom||'العريس'} <span>و</span> {invite.bride||'العروس'}</h1>
+     <div className="cin-couple-names">{invite.groom||'العريس'} <span>و</span> {invite.bride||'العروس'}</div>
      <p className="cin-intro">{invite.intro||'نتشرف بوجودكم ومشاركتكم فرحتنا'}</p>
      <div className="cin-date-line"><span>✦</span>{formatDate(invite.date)}<span>✦</span></div>
      <ChevronDown className="cin-down"/>
