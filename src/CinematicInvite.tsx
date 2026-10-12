@@ -75,16 +75,19 @@ export default function CinematicInvite({invite,compact=false}:{invite:Invitatio
  const manualStop=()=>{if(autoRef.current){autoRef.current=false;setAutoPlaying(false)}};
  return <div ref={viewport} onWheel={manualStop} onTouchStart={manualStop} onKeyDown={e=>{if(['ArrowDown','ArrowUp','PageDown','PageUp',' '].includes(e.key))manualStop()}} className={'cinematic '+(compact?'cinematic--compact ':'')+'cinematic--'+invite.theme} dir="rtl">
   <AnimatePresence mode="wait">
-   {!opened?<motion.div key="sealed" className="cin-sealed" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0,scale:1.1,filter:'blur(8px)'}} transition={{duration:.7}}>
-     <div className="cin-floral cin-floral--top" aria-hidden="true">❦</div>
-     <span className="cin-eyebrow">دعوة زفاف خاصة</span>
+   {!opened?<motion.div key="sealed" className="cin-sealed cin-envelope-scene" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:1}} transition={{duration:.2}}>
+     <div className="cin-emboss cin-emboss--tl" aria-hidden="true">❀<span>❧</span></div>
+     <div className="cin-emboss cin-emboss--br" aria-hidden="true">❀<span>❧</span></div>
+     <span className="cin-envelope-caption">دعوة زفاف</span>
      <h1 className="cin-names cin-names--cover">{invite.groom||'العريس'} <span>و</span> {invite.bride||'العروس'}</h1>
-     <span className="cin-hairline"/>
-     <p className="cin-cover-note">بكل الحب ندعوكم لمشاركتنا ليلة من العمر</p>
-     <button className="cin-envelope" onClick={()=>setOpened(true)} aria-label="افتح ظرف الدعوة">
-       <span className="cin-envelope-flap"/><span className="cin-ribbon-v"/><span className="cin-ribbon-h"/><span className="cin-bow">🎀</span><span className="cin-seal">♡</span>
+     <button className="cin-envelope cin-full-envelope" type="button" onClick={()=>setOpened(true)} aria-label="اضغط على الختم لفتح ظرف الدعوة">
+       <span className="cin-envelope-fold cin-envelope-fold--left"/><span className="cin-envelope-fold cin-envelope-fold--right"/>
+       <span className="cin-satin-ribbon cin-satin-ribbon--vertical"/><span className="cin-satin-ribbon cin-satin-ribbon--horizontal"/>
+       <span className="cin-satin-tail cin-satin-tail--left"/><span className="cin-satin-tail cin-satin-tail--right"/>
+       <span className="cin-satin-bow"><i/><i/></span>
+       <span className="cin-seal"><Heart size={22} strokeWidth={1.3}/></span>
      </button>
-     <span className="cin-floral cin-floral--bottom" aria-hidden="true">❦</span>
+     <span className="cin-seal-hint">المس الختم لفتح الدعوة</span>
    </motion.div>:
    <motion.div key="content" initial={{opacity:0,y:40}} animate={{opacity:1,y:0}} transition={{duration:.9}} className="cin-content">
     <section className="cin-section cin-hero">

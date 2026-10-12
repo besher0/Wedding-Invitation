@@ -113,3 +113,45 @@
 .cin-date-section,.cin-venue-section{min-height:480px}
 .cin-hero .cin-divider,.cin-ending .cin-divider{animation:none}
 @media(max-width:500px){.cin-content{padding-inline:8px}.cin-section{padding:45px 15px;gap:8px}.cin-hero{min-height:680px}.cin-family-pair{gap:8px;padding:8px 0}.cin-date-section,.cin-venue-section{min-height:450px}.cin-hero .cin-corner{font-size:60px}}
+
+/* Reference-inspired phone-sized stationery and interactive ribbon seal. */
+.cinematic{height:100%;width:100%;overflow-x:hidden;overflow-y:auto;scrollbar-width:none;background:var(--cin-paper)}
+.cinematic::-webkit-scrollbar{display:none}
+.cin-envelope-scene{height:100%;min-height:100%;padding:30px 18px;gap:9px;background:linear-gradient(155deg,#fffefa 0%,#fff9f7 65%,#f7efeb 100%);isolation:isolate}
+.cin-envelope-scene:before{inset:10px;border:1px solid #e9ddd6;border-radius:3px}
+.cin-envelope-scene .cin-envelope-caption{font:500 15px Amiri,serif;letter-spacing:2px;z-index:2}
+.cin-envelope-scene .cin-names--cover{font-size:clamp(35px,7vw,48px);margin:0 0 10px;line-height:1.4;z-index:2}
+.cin-emboss{position:absolute;font:100px Amiri,serif;color:#d4c9c1;opacity:.32;pointer-events:none;filter:drop-shadow(1px 2px 1px #fff)}
+.cin-emboss span{display:block;font-size:65px;margin-top:-70px;transform:rotate(35deg)}
+.cin-emboss--tl{top:5px;left:9px;transform:rotate(-35deg)}
+.cin-emboss--br{bottom:3px;right:8px;transform:rotate(145deg)}
+.cin-full-envelope.cin-envelope{width:min(90%,360px);height:clamp(190px,35vh,310px);margin:12px auto;border:1px solid #e2d2ce;background:linear-gradient(145deg,#fffefd,#f6eeeb);border-radius:4px;box-shadow:0 22px 55px #75545a37;display:block;overflow:visible;transform:none;animation:cin-envelope-hover 4s ease-in-out infinite;transition:box-shadow .3s}
+.cin-full-envelope:hover{box-shadow:0 28px 60px #75545a49}
+.cin-envelope-fold{position:absolute;inset:0;clip-path:polygon(0 0,50% 52%,0 100%);background:linear-gradient(115deg,#e7dbd7 0%,#fffefa 80%);filter:drop-shadow(1px 0 1px #bfa8a2)}
+.cin-envelope-fold--right{clip-path:polygon(100% 0,50% 52%,100% 100%);background:linear-gradient(245deg,#e9ddda,#fffefd 85%)}
+.cin-satin-ribbon{position:absolute;background:linear-gradient(90deg,#b97d82,#dfb6ae 25%,#f1d4c5 55%,#be8585 100%);box-shadow:1px 1px 7px #81555750;z-index:2}
+.cin-satin-ribbon--vertical{top:-5px;bottom:-5px;width:39px;left:calc(50% - 19.5px)}
+.cin-satin-ribbon--horizontal{left:-4px;right:-4px;height:36px;top:calc(52% - 18px);background:linear-gradient(#b27e85,#e6bcb1 45%,#bf8c8d)}
+.cin-satin-tail{position:absolute;left:50%;top:53%;width:34px;height:95px;background:linear-gradient(90deg,#bb8790,#ecc5b7,#bc858c);z-index:3;clip-path:polygon(0 0,100% 0,100% 100%,50% 78%,0 100%);transform-origin:top}
+.cin-satin-tail--left{transform:rotate(25deg)}
+.cin-satin-tail--right{transform:rotate(-25deg)}
+.cin-satin-bow{z-index:4;position:absolute;left:50%;top:52%;width:120px;height:65px;transform:translate(-50%,-60%);pointer-events:none}
+.cin-satin-bow i{position:absolute;top:5px;width:65px;height:48px;border:9px solid #ca9898;background:#f8e0d0;border-radius:70% 30% 70% 40%;box-shadow:inset 0 2px 9px #9c656a44}
+.cin-satin-bow i:first-child{left:0;transform:rotate(-21deg)}
+.cin-satin-bow i:last-child{right:0;transform:scaleX(-1) rotate(-21deg)}
+.cin-full-envelope .cin-seal{z-index:6;top:52%;width:58px;height:58px;background:radial-gradient(circle at 32% 25%,#f7e5ce,#dbb19a 64%,#b98984);border:3px double #fff3dd;color:#795253;box-shadow:0 3px 11px #794d5770}
+.cin-full-envelope:before,.cin-full-envelope:after{content:none}
+.cin-seal-hint{font:500 11px Cairo,sans-serif;opacity:.75;z-index:2}
+.cin-content{padding-inline:14px;width:100%;max-width:100%;overflow-x:clip}
+.cin-content .cin-section{min-height:auto;padding:43px 18px;gap:10px}
+.cin-content .cin-hero{min-height:690px;padding-top:80px;padding-bottom:75px}
+.cin-content .cin-date-section,.cin-content .cin-venue-section{min-height:450px}
+.cin-content .cin-ending{min-height:320px}
+.cin-content .cin-family-pair{gap:8px}
+.cin-content .cin-family-column strong{margin-top:4px}
+.cin-content .cin-place-illustration{height:125px;width:min(100%,260px)}
+.cin-content .cin-arches svg{width:47px}
+.cin-content .cin-kicker{margin-bottom:5px}
+.cin-content .cin-verse{font-size:19px}
+@media(max-width:500px){.cin-envelope-scene{min-height:100%}.cin-content .cin-hero{min-height:620px}.cin-content .cin-section{padding-inline:11px}.cin-full-envelope.cin-envelope{height:clamp(190px,32vh,280px)}}
+@media(prefers-reduced-motion:reduce){.cin-full-envelope.cin-envelope{animation:none}}
